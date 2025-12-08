@@ -70,9 +70,9 @@
                <children>
                   <Separator prefWidth="200.0" style="-fx-background-color: #CCCCCC;" />
                   <Button fx:id="homebtn" mnemonicParsing="false" onAction="#showHome" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: linear-gradient(to bottom, #2E7D32, #4CAF50); -fx-text-fill: white; -fx-font-size: 14 px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand; -fx-alignment: CENTER; -fx-padding: 0 0 0 15;" text="Home" />
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: white; -fx-text-fill: #333333; -fx-font-size: 14; -fx-background-radius: 8; -fx-border-color: #E0E0E0; -fx-border-radius: 8; -fx-cursor: hand; -fx-padding: 0 0 0 15;" text="Product Categories" />
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-text-fill: #333333; -fx-font-size: 14; -fx-cursor: hand; -fx-border-radius: 8; -fx-border-color: #E0E0E0; -fx-padding: 0 0 0 15;" text="Newly Added Products" />
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: white; -fx-padding: 0 0 0 15; -fx-border-color: #E0E0E0; -fx-background-radius: 8; -fx-border-radius: 8; -fx-text-fill: #333333; -fx-font-size: 14;" text="My Favourites" />
+                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: white; -fx-text-fill: #708090; -fx-font-size: 14; -fx-background-radius: 8; -fx-border-color: #E0E0E0; -fx-border-radius: 8; -fx-cursor: hand; -fx-padding: 0 0 0 15; -fx-font-weight: bold;" text="Product Categories" />
+                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-text-fill: #708090; -fx-font-size: 14; -fx-cursor: hand; -fx-border-radius: 8; -fx-border-color: #E0E0E0; -fx-padding: 0 0 0 15; -fx-font-weight: bold;" text="Newly Added Products" />
+                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: white; -fx-padding: 0 0 0 15; -fx-border-color: #E0E0E0; -fx-background-radius: 8; -fx-border-radius: 8; -fx-text-fill: #708090; -fx-font-size: 14; -fx-font-weight: bold;" text="My Favourites" />
                </children>
             </VBox>
          </left>
