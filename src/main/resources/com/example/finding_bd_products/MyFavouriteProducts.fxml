@@ -7,11 +7,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
@@ -64,7 +61,10 @@
                         <Button fx:id="homeBtn" mnemonicParsing="false" onAction="#showHome" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: white; -fx-text-fill: #708090; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 25; -fx-border-color: #E0E0E0; -fx-border-radius: 25; -fx-cursor: hand; -fx-alignment: CENTER;" text="Home" />
                         <Button fx:id="categoriesBtn" mnemonicParsing="false" onAction="#showCategories" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: white; -fx-text-fill: #708090; -fx-font-size: 14px; -fx-background-radius: 25; -fx-border-color: #E0E0E0; -fx-border-radius: 25; -fx-cursor: hand; -fx-font-weight: bold;" text="Product Categories" />
                         <Button fx:id="newlyAddedBtn" mnemonicParsing="false" onAction="#showNewlyAdded" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 25; -fx-text-fill: #708090; -fx-font-size: 14px; -fx-cursor: hand; -fx-border-radius: 25; -fx-border-color: #E0E0E0; -fx-font-weight: bold;" text="Newly Added" />
-                        <Button fx:id="favouritesBtn" mnemonicParsing="false" onAction="#showFavourites" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-background-radius: 25; -fx-border-radius: 25; -fx-text-fill: #708090; -fx-font-size: 14px; -fx-font-weight: bold;" text="My Favourites" />
+                        <Button fx:id="favouritesBtn" mnemonicParsing="false" onAction="#showFavourites" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: linear-gradient(to bottom, #2E7D32, #4CAF50); -fx-cursor: hand; -fx-background-radius: 25; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" text="My Favourites">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
                     </children>
                 </HBox>
             </children>
@@ -86,4 +86,3 @@
         </ScrollPane>
     </center>
 </BorderPane>
-
