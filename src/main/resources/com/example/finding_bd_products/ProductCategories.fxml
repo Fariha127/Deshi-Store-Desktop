@@ -100,7 +100,7 @@
 
 
                         <GridPane fx:id="categoriesGrid" hgap="20.0" vgap="20.0">
-                            <!-- Category Card 1: Beverages -->
+
                             <VBox prefHeight="180.0" prefWidth="220.0" spacing="12.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 20; -fx-cursor: hand;" GridPane.columnIndex="0" GridPane.rowIndex="0">
                                 <effect>
                                     <DropShadow offsetY="3.0">
@@ -204,7 +204,6 @@
                                 </children>
                             </VBox>
 
-
                             <VBox prefHeight="180.0" prefWidth="220.0" spacing="12.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 20; -fx-cursor: hand;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                 <effect>
                                     <DropShadow offsetY="3.0">
@@ -229,7 +228,6 @@
                                     </Label>
                                 </children>
                             </VBox>
-
 
                             <VBox prefHeight="180.0" prefWidth="220.0" spacing="12.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 20; -fx-cursor: hand;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                 <effect>
@@ -256,7 +254,6 @@
                                 </children>
                             </VBox>
 
-                            <!-- Category Card 7: Health & Wellness -->
                             <VBox prefHeight="180.0" prefWidth="220.0" spacing="12.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 20; -fx-cursor: hand;" GridPane.columnIndex="0" GridPane.rowIndex="2">
                                 <effect>
                                     <DropShadow offsetY="3.0">
@@ -281,8 +278,6 @@
                                     </Label>
                                 </children>
                             </VBox>
-
-                            <!-- Category Card 8: Baby Care -->
                             <VBox prefHeight="180.0" prefWidth="220.0" spacing="12.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 20; -fx-cursor: hand;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                 <effect>
                                     <DropShadow offsetY="3.0">
@@ -307,8 +302,6 @@
                                     </Label>
                                 </children>
                             </VBox>
-
-
                             <VBox prefHeight="180.0" prefWidth="220.0" spacing="12.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 20; -fx-cursor: hand;" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                 <effect>
                                     <DropShadow offsetY="3.0">
@@ -333,7 +326,6 @@
                                     </Label>
                                 </children>
                             </VBox>
-
                             <columnConstraints>
                                 <ColumnConstraints/>
                                 <ColumnConstraints/>

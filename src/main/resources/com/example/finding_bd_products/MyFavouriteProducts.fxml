@@ -118,7 +118,6 @@
                             </rowConstraints>
                         </GridPane>
                     </children>
-
                 </VBox>
             </content>
         </ScrollPane>

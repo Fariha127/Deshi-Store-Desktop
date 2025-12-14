@@ -58,7 +58,6 @@
                         </HBox>
                     </children>
                 </VBox>
-
                 <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #F5F5F5; -fx-border-color: #E0E0E0; -fx-border-width: 0 0 1 0; -fx-padding: 15 25 15 25;">
                     <children>
                         <Button fx:id="homeBtn" mnemonicParsing="false" onAction="#showHome" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: white; -fx-text-fill: #708090; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 25; -fx-border-color: #E0E0E0; -fx-border-radius: 25; -fx-cursor: hand; -fx-alignment: CENTER;" text="Home" />

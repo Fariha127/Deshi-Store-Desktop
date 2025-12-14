@@ -61,7 +61,6 @@
                         </HBox>
                     </children>
                 </VBox>
-                <!-- Horizontal Navigation Bar -->
                 <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #F5F5F5; -fx-border-color: #E0E0E0; -fx-border-width: 0 0 1 0; -fx-padding: 15 25 15 25;">
                     <children>
                         <Button fx:id="homeBtn" mnemonicParsing="false" onAction="#showHome" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: linear-gradient(to bottom, #2E7D32, #4CAF50); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 25; -fx-cursor: hand; -fx-alignment: CENTER;" text="Home" />
@@ -165,8 +164,6 @@
                                                 </HBox>
                                             </children>
                                         </VBox>
-
-                                        <!-- Product Card 2 -->
                                         <VBox prefHeight="280.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="1" GridPane.rowIndex="0">
                                             <effect>
                                                 <DropShadow offsetY="2.0">
@@ -206,8 +203,6 @@
                                                 </HBox>
                                             </children>
                                         </VBox>
-
-                                        <!-- Product Card 3 -->
                                         <VBox prefHeight="280.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="2">
                                             <effect>
                                                 <DropShadow offsetY="2.0">
@@ -247,8 +242,6 @@
                                                 </HBox>
                                             </children>
                                         </VBox>
-
-                                        <!-- Product Card 4 -->
                                         <VBox prefHeight="280.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="0" GridPane.rowIndex="1">
                                             <effect>
                                                 <DropShadow offsetY="2.0">
