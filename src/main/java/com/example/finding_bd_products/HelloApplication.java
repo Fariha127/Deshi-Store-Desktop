@@ -1,4 +1,4 @@
-package com.example.demo_finding_bd_products;
+package com.example.finding_bd_products;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
