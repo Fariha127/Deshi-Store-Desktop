@@ -24,6 +24,7 @@
                             </color>
                         </DropShadow>
                     </effect>
+
                     <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" spacing="15.0">
                      <children>
