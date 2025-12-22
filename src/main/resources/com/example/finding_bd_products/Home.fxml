@@ -19,7 +19,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.finding_bd_products.HomeController">
+<BorderPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo_finding_bd_products.HomeController">
     <top>
         <VBox spacing="0.0" BorderPane.alignment="CENTER">
             <children>
@@ -170,7 +170,7 @@
                                                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0">
                                                     <children>
                                                         <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="45.0" style="-fx-background-color: #FFEBEE; -fx-text-fill: #D32F2F; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 14px;" text="♡" />
-                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="Add to Cart" HBox.hgrow="ALWAYS" />
+                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="⭐ Rate" HBox.hgrow="ALWAYS" />
                                                     </children>
                                                 </HBox>
                                             </children>
@@ -209,7 +209,7 @@
                                                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0">
                                                     <children>
                                                         <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="45.0" style="-fx-background-color: #FFEBEE; -fx-text-fill: #D32F2F; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 14px;" text="♡" />
-                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="Add to Cart" HBox.hgrow="ALWAYS" />
+                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="⭐ Rate" HBox.hgrow="ALWAYS" />
                                                     </children>
                                                 </HBox>
                                             </children>
@@ -248,7 +248,7 @@
                                                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0">
                                                     <children>
                                                         <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="45.0" style="-fx-background-color: #FFEBEE; -fx-text-fill: #D32F2F; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 14px;" text="♡" />
-                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="Add to Cart" HBox.hgrow="ALWAYS" />
+                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="⭐ Rate" HBox.hgrow="ALWAYS" />
                                                     </children>
                                                 </HBox>
                                             </children>
@@ -287,11 +287,12 @@
                                                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0">
                                                     <children>
                                                         <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="45.0" style="-fx-background-color: #FFEBEE; -fx-text-fill: #D32F2F; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 14px;" text="♥" />
-                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="Add to Cart" HBox.hgrow="ALWAYS" />
+                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="⭐ Rate" HBox.hgrow="ALWAYS" />
                                                     </children>
                                                 </HBox>
                                             </children>
                                         </VBox>
+                                        <!-- Product 5: Shejan Mango Juice -->
                                         <VBox prefHeight="280.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                             <effect>
                                                 <DropShadow offsetY="2.0">
@@ -326,11 +327,12 @@
                                                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0">
                                                     <children>
                                                         <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="45.0" style="-fx-background-color: #FFEBEE; -fx-text-fill: #D32F2F; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 14px;" text="♡" />
-                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="Add to Cart" HBox.hgrow="ALWAYS" />
+                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="⭐ Rate" HBox.hgrow="ALWAYS" />
                                                     </children>
                                                 </HBox>
                                             </children>
                                         </VBox>
+                                        <!-- Product 6: Pran Potata Spicy Biscuit -->
                                         <VBox prefHeight="280.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                             <effect>
                                                 <DropShadow offsetY="2.0">
@@ -365,11 +367,12 @@
                                                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0">
                                                     <children>
                                                         <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="45.0" style="-fx-background-color: #FFEBEE; -fx-text-fill: #D32F2F; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 14px;" text="♡" />
-                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="Add to Cart" HBox.hgrow="ALWAYS" />
+                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="⭐ Rate" HBox.hgrow="ALWAYS" />
                                                     </children>
                                                 </HBox>
                                             </children>
                                         </VBox>
+                                        <!-- Product 7: Ruchi BBQ Chanachur -->
                                         <VBox prefHeight="280.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="0" GridPane.rowIndex="2">
                                             <effect>
                                                 <DropShadow offsetY="2.0">
@@ -404,11 +407,12 @@
                                                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0">
                                                     <children>
                                                         <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="45.0" style="-fx-background-color: #FFEBEE; -fx-text-fill: #D32F2F; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 14px;" text="♡" />
-                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="Add to Cart" HBox.hgrow="ALWAYS" />
+                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="⭐ Rate" HBox.hgrow="ALWAYS" />
                                                     </children>
                                                 </HBox>
                                             </children>
                                         </VBox>
+                                        <!-- Product 8: Bashundhara Hand Towel -->
                                         <VBox prefHeight="280.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                             <effect>
                                                 <DropShadow offsetY="2.0">
@@ -443,11 +447,12 @@
                                                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0">
                                                     <children>
                                                         <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="45.0" style="-fx-background-color: #FFEBEE; -fx-text-fill: #D32F2F; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 14px;" text="♡" />
-                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="Add to Cart" HBox.hgrow="ALWAYS" />
+                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="⭐ Rate" HBox.hgrow="ALWAYS" />
                                                     </children>
                                                 </HBox>
                                             </children>
                                         </VBox>
+                                        <!-- Product 9: Revive Perfect Skin -->
                                         <VBox prefHeight="280.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                             <effect>
                                                 <DropShadow offsetY="2.0">
@@ -482,11 +487,12 @@
                                                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0">
                                                     <children>
                                                         <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="45.0" style="-fx-background-color: #FFEBEE; -fx-text-fill: #D32F2F; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 14px;" text="♡" />
-                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="Add to Cart" HBox.hgrow="ALWAYS" />
+                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="⭐ Rate" HBox.hgrow="ALWAYS" />
                                                     </children>
                                                 </HBox>
                                             </children>
                                         </VBox>
+                                        <!-- Product 10: Jui HairCare Oil -->
                                         <VBox prefHeight="280.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="0" GridPane.rowIndex="3">
                                             <effect>
                                                 <DropShadow offsetY="2.0">
@@ -521,11 +527,12 @@
                                                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0">
                                                     <children>
                                                         <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="45.0" style="-fx-background-color: #FFEBEE; -fx-text-fill: #D32F2F; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 14px;" text="♡" />
-                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="Add to Cart" HBox.hgrow="ALWAYS" />
+                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="⭐ Rate" HBox.hgrow="ALWAYS" />
                                                     </children>
                                                 </HBox>
                                             </children>
                                         </VBox>
+                                        <!-- Product 11: Radhuni Tumeric Powder -->
                                         <VBox prefHeight="280.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                             <effect>
                                                 <DropShadow offsetY="2.0">
@@ -560,11 +567,12 @@
                                                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0">
                                                     <children>
                                                         <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="45.0" style="-fx-background-color: #FFEBEE; -fx-text-fill: #D32F2F; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 14px;" text="♡" />
-                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="Add to Cart" HBox.hgrow="ALWAYS" />
+                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="⭐ Rate" HBox.hgrow="ALWAYS" />
                                                     </children>
                                                 </HBox>
                                             </children>
                                         </VBox>
+
                                         <VBox prefHeight="280.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                             <effect>
                                                 <DropShadow offsetY="2.0">
@@ -599,7 +607,7 @@
                                                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0">
                                                     <children>
                                                         <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="45.0" style="-fx-background-color: #FFEBEE; -fx-text-fill: #D32F2F; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 14px;" text="♡" />
-                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="Add to Cart" HBox.hgrow="ALWAYS" />
+                                                        <Button mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold;" text="⭐ Rate" HBox.hgrow="ALWAYS" />
                                                     </children>
                                                 </HBox>
                                             </children>
