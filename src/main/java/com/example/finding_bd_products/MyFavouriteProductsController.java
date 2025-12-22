@@ -2,6 +2,7 @@ package com.example.finding_bd_products;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,11 +18,10 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
-public class NewProductsController {
-
+public class MyFavouriteProductsController {
     @FXML
     private GridPane productsGrid;
 
@@ -40,9 +40,9 @@ public class NewProductsController {
     @FXML
     private Button favouritesBtn;
 
-    public void initialize() {
-        loadProducts();
-    }
+    private List<Product> favouriteProducts = new ArrayList<>();
+    private DatabaseManager dbManager;
+
 
     private void loadProducts() {
 
@@ -60,12 +60,11 @@ public class NewProductsController {
 
     @FXML
     protected void showNewlyAdded() {
-        // Already on new products page
+        loadPage("NewProducts.fxml");
     }
 
     @FXML
     protected void showFavourites() {
-        loadPage("MyFavouriteProducts.fxml");
     }
 
     @FXML
