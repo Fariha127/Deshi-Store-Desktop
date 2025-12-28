@@ -60,10 +60,15 @@
                                 <Insets left="12.0" top="20.0" />
                             </padding>
                         </Label>
-                        <Region prefHeight="200.0" prefWidth="200.0" />
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 7; -fx-padding: 5;">
+                        <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="SOMETIMES" />
+                        <HBox alignment="CENTER" prefHeight="50.0" spacing="10.0">
                             <children>
-                                <TextField fx:id="searchField" prefHeight="35.0" promptText="Search for products, categories, or brands..." style="-fx-background-color: transparent; -fx-border-color: transparent;" HBox.hgrow="ALWAYS">
+                                <HBox alignment="CENTER_LEFT" prefHeight="50.0" maxWidth="1400.0" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 7; -fx-padding: 5;" HBox.hgrow="ALWAYS">
+                                    <HBox.margin>
+                                        <Insets left="25.0" right="25.0" />
+                                    </HBox.margin>
+                                    <children>
+                                        <TextField fx:id="searchField" prefHeight="35.0" promptText="Search for products, categories, or brands..." style="-fx-background-color: transparent; -fx-border-color: transparent;" HBox.hgrow="ALWAYS">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
@@ -76,6 +81,8 @@
                                         <Insets right="5.0" />
                                     </HBox.margin>
                                 </Button>
+                                    </children>
+                                </HBox>
                             </children>
                         </HBox>
                     </children>
@@ -131,9 +138,9 @@
                         </VBox>
                         <GridPane fx:id="productsGrid" hgap="20.0" vgap="20.0">
                             <columnConstraints>
-                                <ColumnConstraints/>
-                                <ColumnConstraints/>
-                                <ColumnConstraints/>
+                                <ColumnConstraints hgrow="ALWAYS" minWidth="250.0" percentWidth="33.33"/>
+                                <ColumnConstraints hgrow="ALWAYS" minWidth="250.0" percentWidth="33.33"/>
+                                <ColumnConstraints hgrow="ALWAYS" minWidth="250.0" percentWidth="33.33"/>
                             </columnConstraints>
                             <rowConstraints>
                                 <RowConstraints/>

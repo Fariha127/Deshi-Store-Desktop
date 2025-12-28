@@ -1,5 +1,6 @@
 package com.example.finding_bd_products;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -43,6 +44,12 @@ public class CategoryProductsController {
 
     @FXML
     private Button favouritesBtn;
+
+    @FXML
+    private Button loginBtn;
+
+    @FXML
+    private Button signupBtn;
 
     private String currentCategory;
     private DatabaseManager dbManager;
@@ -192,8 +199,21 @@ public class CategoryProductsController {
         loadPage("Favourites.fxml");
     }
 
+    @FXML    protected void goToLogin() {
+        loadPage("Login.fxml");
+    }
+
     @FXML
-    protected void onSearch() {
+    protected void goToSignup() {
+        loadPage("SignupUser.fxml");
+    }
+
+    @FXML
+    protected void goBack() {
+        loadPage("Categories.fxml");
+    }
+
+    @FXML    protected void onSearch() {
         String searchText = searchField.getText();
         System.out.println("Searching for: " + searchText);
     }
@@ -204,9 +224,7 @@ public class CategoryProductsController {
             Parent root = loader.load();
 
             Stage stage = (Stage) homeBtn.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            stage.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
         }

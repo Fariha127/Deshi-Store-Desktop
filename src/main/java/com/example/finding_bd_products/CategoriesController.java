@@ -1,6 +1,7 @@
 package com.example.finding_bd_products;
 
 import com.example.finding_bd_products.CategoryProductsController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -32,7 +33,28 @@ public class CategoriesController {
     private Button favouritesBtn;
 
     @FXML
+    private Button loginBtn;
+
+    @FXML
+    private Button signupBtn;
+
+    @FXML
     protected void showHome() {
+        loadPage("Home.fxml");
+    }
+
+    @FXML
+    protected void goToLogin() {
+        loadPage("Login.fxml");
+    }
+
+    @FXML
+    protected void goToSignup() {
+        loadPage("SignupUser.fxml");
+    }
+
+    @FXML
+    protected void goBack() {
         loadPage("Home.fxml");
     }
 
@@ -42,12 +64,12 @@ public class CategoriesController {
 
     @FXML
     protected void showNewlyAdded() {
-        loadPage("NewlyAdded.fxml");
+        loadPage("NewProducts.fxml");
     }
 
     @FXML
     protected void showFavourites() {
-        loadPage("Favourites.fxml");
+        loadPage("MyFavouriteProducts.fxml");
     }
 
     @FXML
@@ -88,9 +110,7 @@ public class CategoriesController {
             controller.setCategory(categoryName);
 
             Stage stage = (Stage) categoriesBtn.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            stage.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -102,9 +122,7 @@ public class CategoriesController {
             Parent root = loader.load();
 
             Stage stage = (Stage) categoriesBtn.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            stage.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
         }

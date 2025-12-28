@@ -1,7 +1,6 @@
 package com.example.finding_bd_products;
 
-
-
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -36,8 +35,13 @@ public class ProductDetailsController {
     @FXML private Button favouritesBtn;
     @FXML private Button backButton;
 
+    @FXML private Button loginBtn;
+    @FXML private Button signupBtn;
+    @FXML private Button favouriteButton;
+
     private Product currentProduct;
     private boolean hasRecommended = false;
+    private boolean isFavourite = false;
     private DatabaseManager dbManager;
 
     public void initialize() {
@@ -51,6 +55,10 @@ public class ProductDetailsController {
         if (currentProduct != null) {
             displayProductDetails();
             loadReviews();
+            updateFavouriteButton();
+        } else {
+            System.err.println("Product not found: " + productId);
+            productNameLabel.setText("Product not found");
         }
     }
 
@@ -82,20 +90,36 @@ public class ProductDetailsController {
     @FXML
     protected void onRecommendClick() {
         if (!hasRecommended) {
+            // Add recommendation
             currentProduct.addRecommendation();
-
             dbManager.incrementRecommendationCount(currentProduct.getProductId());
 
             recommendationCountLabel.setText(currentProduct.getRecommendationCount() + " Recommendations");
             recommendButton.setText("✓ Recommended");
             recommendButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; " +
-                    "-fx-background-radius: 20; -fx-font-weight: bold;");
+                    "-fx-background-radius: 20; -fx-font-weight: bold; -fx-cursor: hand;");
             hasRecommended = true;
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Thank you!");
             alert.setHeaderText(null);
             alert.setContentText("You recommended this product!");
+            alert.showAndWait();
+        } else {
+            // Remove recommendation
+            currentProduct.removeRecommendation();
+            dbManager.decrementRecommendationCount(currentProduct.getProductId());
+
+            recommendationCountLabel.setText(currentProduct.getRecommendationCount() + " Recommendations");
+            recommendButton.setText("👍 Recommend");
+            recommendButton.setStyle("-fx-background-color: #FF9800; -fx-text-fill: white; " +
+                    "-fx-background-radius: 20; -fx-font-size: 14; -fx-font-weight: bold; -fx-cursor: hand;");
+            hasRecommended = false;
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Removed");
+            alert.setHeaderText(null);
+            alert.setContentText("You unrecommended this product.");
             alert.showAndWait();
         }
     }
@@ -201,19 +225,55 @@ public class ProductDetailsController {
 
     @FXML
     protected void onAddToFavourites() {
-        // Add to database
-        dbManager.addToFavourites(currentProduct.getProductId());
+        if (isFavourite) {
+            // Remove from favourites
+            dbManager.removeFromFavourites(currentProduct.getProductId());
+            isFavourite = false;
+            updateFavouriteButton();
+            
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Removed from Favourites");
+            alert.setHeaderText(null);
+            alert.setContentText(currentProduct.getName() + " removed from favourites!");
+            alert.showAndWait();
+        } else {
+            // Add to favourites
+            dbManager.addToFavourites(currentProduct.getProductId());
+            isFavourite = true;
+            updateFavouriteButton();
+            
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Added to Favourites");
+            alert.setHeaderText(null);
+            alert.setContentText(currentProduct.getName() + " added to favourites!");
+            alert.showAndWait();
+        }
+    }
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Added to Favourites");
-        alert.setHeaderText(null);
-        alert.setContentText(currentProduct.getName() + " added to favourites!");
-        alert.showAndWait();
+    private void updateFavouriteButton() {
+        isFavourite = dbManager.isFavourite(currentProduct.getProductId());
+        if (isFavourite) {
+            favouriteButton.setText("♥ Favourite");
+            favouriteButton.setStyle("-fx-background-color: #D32F2F; -fx-background-radius: 20; -fx-text-fill: white; -fx-font-size: 14; -fx-font-weight: bold; -fx-cursor: hand;");
+        } else {
+            favouriteButton.setText("♡ Favourite");
+            favouriteButton.setStyle("-fx-background-color: white; -fx-background-radius: 20; -fx-text-fill: #D32F2F; -fx-font-size: 14; -fx-font-weight: bold; -fx-cursor: hand; -fx-border-color: #D32F2F; -fx-border-width: 2; -fx-border-radius: 20;");
+        }
     }
 
     @FXML
     protected void onBack() {
         loadPage("Home.fxml");
+    }
+
+    @FXML
+    protected void goToLogin() {
+        loadPage("Login.fxml");
+    }
+
+    @FXML
+    protected void goToSignup() {
+        loadPage("SignupUser.fxml");
     }
 
     @FXML
@@ -242,9 +302,7 @@ public class ProductDetailsController {
             Parent root = loader.load();
 
             Stage stage = (Stage) homeBtn.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            stage.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
         }

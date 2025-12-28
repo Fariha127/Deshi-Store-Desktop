@@ -53,8 +53,6 @@
                                         <Insets right="15.0" />
                                     </HBox.margin>
                                 </Button>
-                            </children>
-                        </HBox>
                                 <Label text="Product Details" textFill="WHITE">
                                     <font>
                                         <Font name="Arial Rounded MT Bold" size="40.0" />
@@ -63,7 +61,8 @@
                                         <Insets bottom="20.0" left="12.0" top="20.0" />
                                     </padding>
                                 </Label>
-                            </children></HBox>
+                            </children>
+                        </HBox>
                     </children>
                 </VBox>
                 <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #F5F5F5; -fx-border-color: #E0E0E0; -fx-border-width: 0 0 1 0; -fx-padding: 10 25 10 25;">
@@ -143,7 +142,7 @@
                                     </VBox.margin>
                                     <children>
                                         <Button fx:id="recommendButton" mnemonicParsing="false" onAction="#onRecommendClick" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 14; -fx-font-weight: bold; -fx-cursor: hand;" text="👍 Recommend" textFill="WHITE" />
-                                        <Button fx:id="favouriteButton" mnemonicParsing="false" onAction="#onAddToFavourites" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #E91E63; -fx-background-radius: 20; -fx-text-fill: white; -fx-font-size: 14; -fx-font-weight: bold; -fx-cursor: hand;" text="♡ Favourite" />
+                                        <Button fx:id="favouriteButton" mnemonicParsing="false" onAction="#onAddToFavourites" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-text-fill: #D32F2F; -fx-font-size: 14; -fx-font-weight: bold; -fx-cursor: hand; -fx-border-color: #D32F2F; -fx-border-width: 2; -fx-border-radius: 20;" text="♡ Favourite" />
                                     </children>
                                 </HBox>
                             </children>

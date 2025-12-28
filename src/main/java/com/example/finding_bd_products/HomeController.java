@@ -1,5 +1,6 @@
 package com.example.finding_bd_products;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -41,9 +42,38 @@ public class HomeController {
     @FXML
     private GridPane recommendedGrid;
 
+    @FXML
+    private Button loginBtn;
+
+    @FXML
+    private Button signupBtn;
+
+    private DatabaseManager dbManager;
 
     @FXML
     protected void showHome() {
+    }
+
+    @FXML
+    protected void goToLogin() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+            Stage stage = (Stage) loginBtn.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void goToSignup() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("SignupUser.fxml"));
+            Stage stage = (Stage) signupBtn.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -67,6 +97,7 @@ public class HomeController {
     }
 
     public void initialize() {
+        dbManager = DatabaseManager.getInstance();
         if (recommendedGrid != null) {
             loadRecommendedProducts();
         }
@@ -75,7 +106,6 @@ public class HomeController {
     private void loadRecommendedProducts() {
         recommendedGrid.getChildren().clear();
 
-        DatabaseManager dbManager = DatabaseManager.getInstance();
         Product[] recommended = {
                 dbManager.getProduct("mojo"),
                 dbManager.getProduct("mediplus"),
@@ -145,11 +175,36 @@ public class HomeController {
         HBox buttonBox = new HBox(8);
         Button favButton = new Button("♡");
         favButton.setPrefSize(45, 32);
-        favButton.setStyle("-fx-background-color: #FFEBEE; -fx-text-fill: #D32F2F; " +
-                "-fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 14px;");
+        
+        // Check if product is favourite and set initial style
+        boolean isFav = dbManager.isFavourite(product.getProductId());
+        if (isFav) {
+            favButton.setText("♥");
+            favButton.setStyle("-fx-background-color: #D32F2F; -fx-text-fill: white; " +
+                    "-fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 14px;");
+        } else {
+            favButton.setStyle("-fx-background-color: white; -fx-text-fill: #D32F2F; " +
+                    "-fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 14px; -fx-border-color: #D32F2F; -fx-border-width: 1.5; -fx-border-radius: 6;");
+        }
+        
         favButton.setOnAction(e -> {
             e.consume();
-            System.out.println("Added to favourites: " + product.getName());
+            boolean currentlyFav = dbManager.isFavourite(product.getProductId());
+            if (currentlyFav) {
+                // Remove from favourites
+                dbManager.removeFromFavourites(product.getProductId());
+                favButton.setText("♡");
+                favButton.setStyle("-fx-background-color: white; -fx-text-fill: #D32F2F; " +
+                        "-fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 14px; -fx-border-color: #D32F2F; -fx-border-width: 1.5; -fx-border-radius: 6;");
+                System.out.println("Removed from favourites: " + product.getName());
+            } else {
+                // Add to favourites
+                dbManager.addToFavourites(product.getProductId());
+                favButton.setText("♥");
+                favButton.setStyle("-fx-background-color: #D32F2F; -fx-text-fill: white; " +
+                        "-fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 14px;");
+                System.out.println("Added to favourites: " + product.getName());
+            }
         });
 
         Button rateButton = new Button("⭐ Rate");
@@ -174,16 +229,24 @@ public class HomeController {
 
     private void navigateToProductDetails(String productId) {
         try {
+            System.out.println("Navigating to product: " + productId);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ProductDetails.fxml"));
             Parent root = loader.load();
 
             ProductDetailsController controller = loader.getController();
-            controller.setProduct(productId);
+            if (controller != null) {
+                controller.setProduct(productId);
+            } else {
+                System.err.println("Controller is null!");
+            }
 
             Stage stage = (Stage) homeBtn.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            stage.getScene().setRoot(root);
         } catch (IOException e) {
+            System.err.println("Error loading ProductDetails.fxml");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -193,9 +256,7 @@ public class HomeController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent root = loader.load();
             Stage stage = (Stage) homeBtn.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            stage.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
 
