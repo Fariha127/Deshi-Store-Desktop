@@ -545,6 +545,22 @@ public class DatabaseManager {
         }
         return false;
     }
+    
+    // Check if email exists
+    public boolean emailExists(String email) {
+        String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     // User Login
     public User authenticateUser(String email, String password) {
