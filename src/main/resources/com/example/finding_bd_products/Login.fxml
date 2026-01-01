@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: linear-gradient(to bottom, #2E7D32, #4CAF50);" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.finding_bd_products.LoginController">
+    <padding>
+        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
+    </padding>
+
+    <!-- Back Button -->
+    <HBox alignment="TOP_LEFT">
+        <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" style="-fx-background-color: rgba(255, 255, 255, 0.2); -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand; -fx-padding: 8 15 8 15; -fx-border-color: white; -fx-border-width: 1.5; -fx-border-radius: 5;" text="← Back to Home" />
+    </HBox>
+
+    <!-- Title -->
+    <Text text="Finding BD Products" style="-fx-fill: white;">
+        <font>
+            <Font name="System Bold" size="32.0"/>
+        </font>
+    </Text>
+
+    <Text text="Login" style="-fx-fill: white;">
+        <font>
+            <Font size="24.0"/>
+        </font>
+    </Text>
+
+    <VBox spacing="15.0" alignment="CENTER" maxWidth="400">
+        <!-- User Type Selection -->
+        <HBox spacing="10.0" alignment="CENTER">
+            <Label text="Login as:" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <ComboBox fx:id="userTypeCombo" prefWidth="250" style="-fx-background-color: #C9F6C1;"/>
+        </HBox>
+
+        <!-- Email Field -->
+        <VBox spacing="5.0">
+            <Label text="Email:" style="-fx-font-size: 14px; -fx-text-fill: white;"/>
+            <TextField fx:id="emailField" promptText="Enter your email" prefWidth="400" style="-fx-background-color: #C9F6C1; -fx-text-fill: #52544F; -fx-prompt-text-fill: #979A93;"/>
+        </VBox>
+
+        <!-- Password Field -->
+        <VBox spacing="5.0">
+            <Label text="Password:" style="-fx-font-size: 14px; -fx-text-fill: white;"/>
+            <StackPane>
+                <PasswordField fx:id="passwordField" promptText="Enter your password" prefWidth="400" style="-fx-background-color: #C9F6C1; -fx-text-fill: #52544F; -fx-prompt-text-fill: #979A93; -fx-padding: 5 40 5 10;"/>
+                <TextField fx:id="visiblePasswordField" promptText="Enter your password" prefWidth="400" style="-fx-background-color: #C9F6C1; -fx-text-fill: #52544F; -fx-prompt-text-fill: #979A93; -fx-padding: 5 40 5 10;" visible="false" managed="false"/>
+                <Button fx:id="togglePasswordBtn" text="👁" onAction="#togglePasswordVisibility" 
+                        style="-fx-background-color: transparent; -fx-text-fill: #52544F; -fx-font-size: 16px; -fx-cursor: hand; -fx-padding: 5 10 5 10;"
+                        prefHeight="30" prefWidth="40" StackPane.alignment="CENTER_RIGHT" mouseTransparent="false">
+                    <StackPane.margin>
+                        <Insets right="5"/>
+                    </StackPane.margin>
+                </Button>
+            </StackPane>
+        </VBox>
+
+        <!-- Error Label -->
+        <Label fx:id="errorLabel" style="-fx-text-fill: #FFCCCC; -fx-font-size: 12px;" wrapText="true" maxWidth="400"/>
+
+        <!-- Login Button -->
+        <Button text="Login" onAction="#handleLogin" prefWidth="200" style="-fx-background-color: linear-gradient(to bottom right, #FF6B35, #F7931E); -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 10px; -fx-background-radius: 5;">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Button>
+
+        <!-- Signup Links -->
+        <VBox spacing="10.0" alignment="CENTER">
+            <Text text="Don&apos;t have an account?" style="-fx-fill: white;">
+                <font>
+                    <Font size="13.0"/>
+                </font>
+            </Text>
+            
+            <HBox spacing="15.0" alignment="CENTER">
+                <Hyperlink text="Signup as Company Vendor" onAction="#goToCompanyVendorSignup" style="-fx-font-size: 12px; -fx-text-fill: white; -fx-underline: true;"/>
+                <Hyperlink text="Signup as Retail Vendor" onAction="#goToRetailVendorSignup" style="-fx-font-size: 12px; -fx-text-fill: white; -fx-underline: true;"/>
+            </HBox>
+            
+            <Hyperlink text="Signup as User" onAction="#goToUserSignup" style="-fx-font-size: 12px; -fx-text-fill: white; -fx-underline: true;"/>
+        </VBox>
+    </VBox>
+</VBox>
