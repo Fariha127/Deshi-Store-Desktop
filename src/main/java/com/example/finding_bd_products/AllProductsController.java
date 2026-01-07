@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,7 +23,10 @@ import java.io.IOException;
 
 public class AllProductsController {
     @FXML
-    private Button backButton;
+    private TextField searchField;
+
+    @FXML
+    private Button searchButton;
 
     @FXML
     private Button homeBtn;
@@ -61,11 +65,6 @@ public class AllProductsController {
     private Button logoutBtn;
 
     private DatabaseManager dbManager;
-
-    @FXML
-    protected void goBack() {
-        loadPage("Home.fxml");
-    }
 
     @FXML
     protected void showHome() {
@@ -367,7 +366,7 @@ public class AllProductsController {
                 System.err.println("Controller is null!");
             }
 
-            Stage stage = (Stage) backButton.getScene().getWindow();
+            Stage stage = (Stage) homeBtn.getScene().getWindow();
             stage.getScene().setRoot(root);
         } catch (IOException e) {
             System.err.println("Error loading ProductDetails.fxml");
@@ -382,10 +381,64 @@ public class AllProductsController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent root = loader.load();
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.getScene().setRoot(root);
+            
+            // Try to get the stage from any available button
+            Stage stage = null;
+            if (homeBtn != null && homeBtn.getScene() != null) {
+                stage = (Stage) homeBtn.getScene().getWindow();
+            } else if (categoriesBtn != null && categoriesBtn.getScene() != null) {
+                stage = (Stage) categoriesBtn.getScene().getWindow();
+            } else if (allProductsBtn != null && allProductsBtn.getScene() != null) {
+                stage = (Stage) allProductsBtn.getScene().getWindow();
+            }
+            
+            if (stage != null) {
+                stage.getScene().setRoot(root);
+            }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void onSearch() {
+        String searchText = searchField.getText().trim().toLowerCase();
+        if (searchText.isEmpty()) {
+            loadAllProducts(); // Reload all products if search is empty
+            return;
+        }
+
+        allProductsGrid.getChildren().clear();
+        java.util.List<Product> allProducts = dbManager.getAllProducts();
+        
+        // Filter products based on search text
+        java.util.List<Product> filteredProducts = new java.util.ArrayList<>();
+        for (Product product : allProducts) {
+            if (product.getName().toLowerCase().contains(searchText) ||
+                product.getDescription().toLowerCase().contains(searchText) ||
+                product.getCategory().toLowerCase().contains(searchText)) {
+                filteredProducts.add(product);
+            }
+        }
+
+        // Display filtered products
+        int col = 0;
+        int row = 0;
+        for (Product product : filteredProducts) {
+            VBox card = createProductCard(product);
+            allProductsGrid.add(card, col, row);
+            col++;
+            if (col > 2) {
+                col = 0;
+                row++;
+            }
+        }
+
+        // Show message if no products found
+        if (filteredProducts.isEmpty()) {
+            Label noResultsLabel = new Label("No products found matching \"" + searchText + "\"");
+            noResultsLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #666666;");
+            allProductsGrid.add(noResultsLabel, 0, 0);
         }
     }
 

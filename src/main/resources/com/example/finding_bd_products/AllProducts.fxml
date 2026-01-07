@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -28,16 +29,7 @@
                         </DropShadow>
                     </effect>
                     <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="15.0">
-                            <children>
-                                <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: rgba(255, 255, 255, 0.95); -fx-text-fill: #2E7D32; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand; -fx-border-color: rgba(46, 125, 50, 0.3); -fx-border-width: 1.5; -fx-border-radius: 5;" text="← Back">
-                                    <HBox.margin>
-                                        <Insets left="25.0" />
-                                    </HBox.margin>
-                                </Button>
-                            </children>
-                        </HBox>
-                        <Label text="  All Products" textFill="WHITE">
+                        <Label text="  Deshi Store" textFill="WHITE">
                             <font>
                                 <Font name="Arial Rounded MT Bold" size="48.0" />
                             </font>
@@ -45,14 +37,31 @@
                                 <Insets left="12.0" top="20.0" />
                             </padding>
                         </Label>
-                        <Label text="  Browse all available products" textFill="WHITE">
-                            <font>
-                                <Font name="System" size="16.0" />
-                            </font>
-                            <padding>
-                                <Insets left="15.0" />
-                            </padding>
-                        </Label>
+                        <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="SOMETIMES" />
+                        <HBox alignment="CENTER" prefHeight="50.0" spacing="10.0">
+                            <children>
+                                <HBox alignment="CENTER_LEFT" prefHeight="50.0" maxWidth="1400.0" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 7; -fx-padding: 5;" HBox.hgrow="ALWAYS">
+                                    <HBox.margin>
+                                        <Insets left="25.0" right="25.0" />
+                                    </HBox.margin>
+                                    <children>
+                                        <TextField fx:id="searchField" prefHeight="35.0" promptText="Search for products, categories, or brands..." style="-fx-background-color: transparent; -fx-border-color: transparent;" HBox.hgrow="ALWAYS">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                    <padding>
+                                        <Insets left="15.0" />
+                                    </padding>
+                                </TextField>
+                                <Button fx:id="searchButton" mnemonicParsing="false" onAction="#onSearch" prefHeight="35.0" prefWidth="120.0" style="-fx-background-color: #DCDCDC; -fx-background-radius: 20; -fx-font-weight: bold; -fx-cursor: hand;" text="Search">
+                                    <HBox.margin>
+                                        <Insets right="5.0" />
+                                    </HBox.margin>
+                                </Button>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </HBox>
                     </children>
                 </VBox>
                 <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #F5F5F5; -fx-border-color: #E0E0E0; -fx-border-width: 0 0 1 0; -fx-padding: 15 25 15 25;">
@@ -62,7 +71,7 @@
                         <Button fx:id="categoriesBtn" mnemonicParsing="false" onAction="#showCategories" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: white; -fx-text-fill: #708090; -fx-font-size: 14px; -fx-background-radius: 5; -fx-border-color: #E0E0E0; -fx-border-radius: 5; -fx-cursor: hand; -fx-font-weight: bold;" text="Product Categories" />
                         <Button fx:id="newlyAddedBtn" mnemonicParsing="false" onAction="#showNewlyAdded" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-text-fill: #708090; -fx-font-size: 14px; -fx-cursor: hand; -fx-border-radius: 5; -fx-border-color: #E0E0E0; -fx-font-weight: bold;" text="Newly Added" />
                         <Button fx:id="favouritesBtn" mnemonicParsing="false" onAction="#showFavourites" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-background-radius: 5; -fx-border-radius: 5; -fx-text-fill: #708090; -fx-font-size: 14px; -fx-font-weight: bold;" text="My Favourites" />
-                        <Button fx:id="favouriteCategoriesBtn" mnemonicParsing="false" onAction="#showFavouriteCategories" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: white; -fx-cursor: hand; -fx-background-radius: 5; -fx-text-fill: #708090; -fx-font-size: 14px; -fx-font-weight: bold; -fx-border-color: #E0E0E0; -fx-border-radius: 5;" text="Favourite Categories">
+                        <Button fx:id="favouriteCategoriesBtn" mnemonicParsing="false" onAction="#showFavouriteCategories" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: white; -fx-cursor: hand; -fx-background-radius: 5; -fx-text-fill: #708090; -fx-font-size: 14px; -fx-font-weight: bold;" text="Favourite Categories">
                             <font>
                                 <Font size="14.0" />
                             </font></Button>
@@ -96,6 +105,9 @@
             </children>
         </VBox>
     </top>
+    <padding>
+        <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
+    </padding>
     <center>
         <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: white; -fx-background: white;" BorderPane.alignment="CENTER">
             <content>
@@ -109,7 +121,7 @@
                                 <Font name="System Bold" size="18.0" />
                             </font>
                         </Label>
-                        <GridPane fx:id="productsGrid" hgap="20.0" vgap="20.0">
+                        <GridPane fx:id="allProductsGrid" hgap="20.0" vgap="20.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="ALWAYS" minWidth="250.0" percentWidth="33.33" />
                                 <ColumnConstraints hgrow="ALWAYS" minWidth="250.0" percentWidth="33.33" />

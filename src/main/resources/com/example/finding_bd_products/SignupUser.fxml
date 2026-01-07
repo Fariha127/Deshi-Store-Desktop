@@ -12,11 +12,6 @@
             <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
         </padding>
 
-        <!-- Back Button -->
-        <HBox alignment="TOP_LEFT">
-            <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" style="-fx-background-color: rgba(255, 255, 255, 0.2); -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand; -fx-padding: 8 15 8 15; -fx-border-color: white; -fx-border-width: 1.5; -fx-border-radius: 5;" text="← Back to Login" />
-        </HBox>
-
         <!-- Title -->
         <Text text="User Sign Up" style="-fx-fill: white;">
             <font>

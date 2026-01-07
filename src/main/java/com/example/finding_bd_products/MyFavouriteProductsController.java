@@ -51,6 +51,15 @@ public class MyFavouriteProductsController {
     private Button favouriteCategoriesBtn;
 
     @FXML
+    private Button addProductBtn;
+
+    @FXML
+    private Button myProfileBtn;
+
+    @FXML
+    private Button logoutBtn;
+
+    @FXML
     private Button loginBtn;
 
     @FXML
@@ -69,7 +78,19 @@ public class MyFavouriteProductsController {
             showEmptyState();
         }
         
-        // Hide login/signup buttons if user or vendor is logged in
+        // Show "Add Product" button only for logged-in vendors
+        if (addProductBtn != null && VendorSession.getInstance().isLoggedIn()) {
+            addProductBtn.setVisible(true);
+            addProductBtn.setManaged(true);
+        }
+        
+        // Show "My Profile" button only for logged-in users (not vendors)
+        if (myProfileBtn != null && UserSession.getInstance().isLoggedIn()) {
+            myProfileBtn.setVisible(true);
+            myProfileBtn.setManaged(true);
+        }
+        
+        // Hide login/signup buttons and show logout button if user or vendor is logged in
         if (UserSession.getInstance().isLoggedIn() || VendorSession.getInstance().isLoggedIn()) {
             if (loginBtn != null) {
                 loginBtn.setVisible(false);
@@ -78,6 +99,10 @@ public class MyFavouriteProductsController {
             if (signupBtn != null) {
                 signupBtn.setVisible(false);
                 signupBtn.setManaged(false);
+            }
+            if (logoutBtn != null) {
+                logoutBtn.setVisible(true);
+                logoutBtn.setManaged(true);
             }
         }
     }
@@ -272,8 +297,48 @@ public class MyFavouriteProductsController {
     }
 
     @FXML
-    protected void goBack() {
-        loadPage("Home.fxml");
+    protected void goToAddProduct() {
+        if (!VendorSession.getInstance().isLoggedIn()) {
+            return;
+        }
+        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AddProduct.fxml"));
+            Parent root = loader.load();
+            
+            AddProductController controller = loader.getController();
+            controller.setVendorInfo(
+                VendorSession.getInstance().getCurrentVendorId(),
+                VendorSession.getInstance().getVendorType()
+            );
+            
+            Stage stage = (Stage) addProductBtn.getScene().getWindow();
+            stage.setScene(new Scene(root, 1200, 800));
+            stage.setTitle("Add Product");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void goToMyProfile() {
+        loadPage("MyProfile.fxml");
+    }
+
+    @FXML
+    protected void handleLogout() {
+        try {
+            // Clear both user and vendor sessions
+            UserSession.getInstance().logout();
+            VendorSession.getInstance().logout();
+            
+            // Navigate back to login page
+            Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+            Stage stage = (Stage) logoutBtn.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
