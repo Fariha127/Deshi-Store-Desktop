@@ -34,6 +34,9 @@ public class HomeController {
     private Button homeBtn;
 
     @FXML
+    private Button allProductsBtn;
+
+    @FXML
     private Button categoriesBtn;
 
     @FXML
@@ -67,6 +70,11 @@ public class HomeController {
 
     @FXML
     protected void showHome() {
+    }
+
+    @FXML
+    protected void showAllProducts() {
+        loadPage("AllProducts.fxml");
     }
 
     @FXML
@@ -206,24 +214,24 @@ public class HomeController {
     private void loadRecommendedProducts() {
         recommendedGrid.getChildren().clear();
 
-        Product[] recommended = {
-                dbManager.getProduct("mojo"),
-                dbManager.getProduct("mediplus"),
-                dbManager.getProduct("spa-water"),
-                dbManager.getProduct("meril-soap"),
-                dbManager.getProduct("shezan-juice"),
-                dbManager.getProduct("pran-potata"),
-                dbManager.getProduct("ruchi-chanachur"),
-                dbManager.getProduct("bashundhara-towel"),
-                dbManager.getProduct("revive-lotion"),
-                dbManager.getProduct("jui-oil"),
-                dbManager.getProduct("radhuni-tumeric"),
-                dbManager.getProduct("pran-ghee")
-        };
+        // Get all products from database
+        java.util.List<Product> allProducts = dbManager.getAllProducts();
+        
+        if (allProducts.isEmpty()) {
+            System.out.println("No products found in database");
+            return;
+        }
+        
+        System.out.println("Loaded " + allProducts.size() + " products from database");
 
         int col = 0;
         int row = 0;
-        for (Product product : recommended) {
+        
+        // Display up to 12 products (4 rows x 3 columns)
+        int maxProducts = Math.min(allProducts.size(), 12);
+        
+        for (int i = 0; i < maxProducts; i++) {
+            Product product = allProducts.get(i);
             if (product != null) {
                 VBox card = createProductCard(product);
                 recommendedGrid.add(card, col, row);

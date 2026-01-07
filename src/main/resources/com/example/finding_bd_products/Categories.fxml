@@ -77,7 +77,8 @@
 
                 <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #F5F5F5; -fx-border-color: #E0E0E0; -fx-border-width: 0 0 1 0; -fx-padding: 15 25 15 25;">
                     <children>
-                        <Button fx:id="homeBtn" mnemonicParsing="false" onAction="#showHome" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: white; -fx-text-fill: #708090; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-border-color: #E0E0E0; -fx-border-radius: 5; -fx-cursor: hand; -fx-alignment: CENTER;" text="Home" />
+                        <Button fx:id="homeBtn" mnemonicParsing="false" onAction="#showHome" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: white; -fx-text-fill: #708090; -fx-font-size: 14px; -fx-background-radius: 5; -fx-border-color: #E0E0E0; -fx-border-radius: 5; -fx-cursor: hand; -fx-font-weight: bold;" text="Home" />
+                        <Button fx:id="allProductsBtn" mnemonicParsing="false" onAction="#showAllProducts" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: white; -fx-text-fill: #708090; -fx-font-size: 14px; -fx-background-radius: 5; -fx-border-color: #E0E0E0; -fx-border-radius: 5; -fx-cursor: hand; -fx-font-weight: bold;" text="All Products" />
                         <Button fx:id="categoriesBtn" mnemonicParsing="false" onAction="#showCategories" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: linear-gradient(to bottom, #2E7D32, #4CAF50); -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-weight: bold;" text="Product Categories" />
                         <Button fx:id="newlyAddedBtn" mnemonicParsing="false" onAction="#showNewlyAdded" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-text-fill: #708090; -fx-font-size: 14px; -fx-cursor: hand; -fx-border-radius: 5; -fx-border-color: #E0E0E0; -fx-font-weight: bold;" text="Newly Added" />
                         <Button fx:id="favouritesBtn" mnemonicParsing="false" onAction="#showFavourites" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-background-radius: 5; -fx-border-radius: 5; -fx-text-fill: #708090; -fx-font-size: 14px; -fx-font-weight: bold;" text="My Favourites" />
@@ -85,6 +86,21 @@
                             <font>
                                 <Font size="14.0" />
                             </font></Button>
+                        <Button fx:id="addProductBtn" mnemonicParsing="false" onAction="#goToAddProduct" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: linear-gradient(to bottom right, #FF6B35, #F7931E); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" text="Add Product" visible="false" managed="false">
+                            <font>
+                                <Font size="14.0" />
+                            </font></Button>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="myProfileBtn" mnemonicParsing="false" onAction="#goToMyProfile" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: linear-gradient(to bottom, #2E7D32, #4CAF50); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" text="My Profile" visible="false" managed="false">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#handleLogout" prefHeight="40.0" prefWidth="110.0" style="-fx-background-color: #FF6B35; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" text="Logout" visible="false" managed="false">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Button>
                         <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#goToLogin" prefHeight="40.0" prefWidth="110.0" style="-fx-background-color: rgba(255, 255, 255, 0.95); -fx-text-fill: #2E7D32; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand; -fx-border-color: #2E7D32; -fx-border-width: 1.5; -fx-border-radius: 5;" text="Login">
                             <font>
                                 <Font name="System Bold" size="14.0" />

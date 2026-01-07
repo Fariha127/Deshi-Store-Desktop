@@ -41,7 +41,24 @@
             <!-- Email -->
             <VBox spacing="5.0">
                 <Label text="Email: *" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: white;"/>
-                <TextField fx:id="emailField" promptText="Enter email address" prefWidth="500" style="-fx-background-color: #C9F6C1; -fx-text-fill: #52544F; -fx-prompt-text-fill: #979A93;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <TextField fx:id="emailField" promptText="Enter email address" prefWidth="380" style="-fx-background-color: #C9F6C1; -fx-text-fill: #52544F; -fx-prompt-text-fill: #979A93;" HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="sendVerificationBtn" text="Send Code" onAction="#handleSendVerificationCode"
+                            style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand; -fx-padding: 10 15;"
+                            prefWidth="110"/>
+                </HBox>
+            </VBox>
+
+            <!-- Verification Code -->
+            <VBox fx:id="verificationCodeBox" spacing="5.0" visible="false" managed="false">
+                <Label text="Verification Code: *" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <TextField fx:id="verificationCodeField" promptText="Enter 6-digit code" prefWidth="380" style="-fx-background-color: #C9F6C1; -fx-text-fill: #52544F; -fx-prompt-text-fill: #979A93;" HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="verifyEmailBtn" text="Verify" onAction="#handleVerifyEmail"
+                            style="-fx-background-color: #2E7D32; -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand; -fx-padding: 10 15;"
+                            prefWidth="110"/>
+                </HBox>
+                <Label fx:id="verificationStatusLabel" style="-fx-font-size: 12px; -fx-text-fill: #FFCCCC;"/>
             </VBox>
 
             <!-- Password -->

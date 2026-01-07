@@ -7,6 +7,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -18,9 +20,11 @@ import java.io.IOException;import java.time.format.DateTimeFormatter;import java
 public class ProductDetailsController {
 
     @FXML private Label productNameLabel;
+    @FXML private Label manufacturerLabel;
     @FXML private Label productDescriptionLabel;
     @FXML private Label productPriceLabel;
     @FXML private Label productCategoryLabel;
+    @FXML private ImageView productImageView;
     @FXML private Label recommendationCountLabel;
     @FXML private Label averageRatingLabel;
     @FXML private Button recommendButton;
@@ -90,6 +94,45 @@ public class ProductDetailsController {
         productPriceLabel.setText("৳ " + (int)currentProduct.getPrice() + "/" + currentProduct.getUnit());
         productCategoryLabel.setText(currentProduct.getCategory());
         recommendationCountLabel.setText(currentProduct.getRecommendationCount() + " Recommendations");
+        
+        // Set manufacturer name
+        if (currentProduct.getManufacturerName() != null && !currentProduct.getManufacturerName().isEmpty()) {
+            manufacturerLabel.setText("Manufacturer: " + currentProduct.getManufacturerName());
+        } else {
+            manufacturerLabel.setText("Manufacturer: Unknown");
+        }
+        
+        // Load product image
+        if (currentProduct.getImageUrl() != null && !currentProduct.getImageUrl().isEmpty()) {
+            try {
+                // Try loading as resource first (for local files)
+                Image image = null;
+                try {
+                    image = new Image(getClass().getResourceAsStream(currentProduct.getImageUrl()));
+                } catch (Exception e1) {
+                    // If resource loading fails, try as URL
+                    try {
+                        image = new Image(currentProduct.getImageUrl(), true);
+                    } catch (Exception e2) {
+                        System.err.println("Failed to load image from URL: " + e2.getMessage());
+                    }
+                }
+                
+                if (image != null && !image.isError()) {
+                    productImageView.setImage(image);
+                } else {
+                    // Set placeholder style
+                    productImageView.setStyle("-fx-background-color: #F5F5F5;");
+                    System.err.println("Image is null or has error");
+                }
+            } catch (Exception e) {
+                System.err.println("Failed to load image: " + e.getMessage());
+                productImageView.setStyle("-fx-background-color: #F5F5F5;");
+            }
+        } else {
+            // No image URL, use placeholder
+            productImageView.setStyle("-fx-background-color: #F5F5F5;");
+        }
 
         if (currentProduct.getReviews().isEmpty()) {
             averageRatingLabel.setText("No ratings yet");

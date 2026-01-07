@@ -17,7 +17,7 @@
     </HBox>
 
     <!-- Title -->
-    <Text text="Finding BD Products" style="-fx-fill: white;">
+    <Text text="Deshi Store" style="-fx-fill: white;">
         <font>
             <Font name="System Bold" size="32.0"/>
         </font>

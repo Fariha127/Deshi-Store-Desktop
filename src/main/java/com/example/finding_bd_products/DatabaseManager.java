@@ -37,6 +37,7 @@ public class DatabaseManager {
                     unit TEXT,
                     category TEXT,
                     image_url TEXT,
+                    vendor_id TEXT,
                     recommendation_count INTEGER DEFAULT 0
                 )
                 """;
@@ -137,6 +138,17 @@ public class DatabaseManager {
                 """;
             stmt.execute(createAdminTable);
 
+            // Migrate existing products table to add vendor_id column if it doesn't exist
+            try {
+                stmt.execute("ALTER TABLE products ADD COLUMN vendor_id TEXT");
+                System.out.println("Added vendor_id column to products table");
+            } catch (SQLException e) {
+                // Column already exists, ignore
+                if (!e.getMessage().contains("duplicate column")) {
+                    System.out.println("vendor_id column already exists or migration not needed");
+                }
+            }
+
             // Create default admin if not exists
             createDefaultAdmin();
 
@@ -161,19 +173,22 @@ public class DatabaseManager {
     }
 
     private void seedInitialData() {
+        // First, create vendor records for manufacturers
+        seedVendors();
         
-        insertProduct("mojo", "Mojo", "Soft Drink", 25, "250ml", "Beverages", "/images/mojo.jpg");
-        insertProduct("mediplus", "Mediplus DS", "Toothpaste", 85, "100g", "Oral Care", "/images/mediplus.jpg");
-        insertProduct("spa-water", "Spa Drinking Water", "Water", 20, "500ml", "Beverages", "/images/spa-water.jpg");
-        insertProduct("meril-soap", "Meril Milk Soap", "Moisturizing Soap", 35, "75g", "Skin Care", "/images/meril-soap.jpg");
-        insertProduct("shezan-juice", "Shezan Mango Juice", "Mango Juice", 35, "200ml", "Beverages", "/images/shezan-juice.jpg");
-        insertProduct("pran-potata", "Pran Potata Spicy", "Biscuit", 40, "pack", "Snacks", "/images/pran-potata.jpg");
-        insertProduct("ruchi-chanachur", "Ruchi BBQ Chanachur", "Snack", 30, "150g", "Snacks", "/images/ruchi-chanachur.jpg");
-        insertProduct("bashundhara-towel", "Bashundhara Towel", "Hand Towel", 80, "pack", "Home Care", "/images/bashundhara-towel.jpg");
-        insertProduct("revive-lotion", "Revive Perfect Skin", "Moisturizing Lotion", 150, "100ml", "Skin Care", "/images/revive-lotion.jpg");
-        insertProduct("jui-oil", "Jui HairCare Oil", "Hair Oil", 95, "200ml", "Hair Care", "/images/jui-oil.jpg");
-        insertProduct("radhuni-tumeric", "Radhuni Tumeric", "Powder", 55, "100g", "Food & Grocery", "/images/radhuni-tumeric.jpg");
-        insertProduct("pran-ghee", "Pran Premium Ghee", "Cooking Ghee", 250, "500g", "Food & Grocery", "/images/pran-ghee.jpg");
+        // Then create products with vendor references
+        insertProductWithVendor("mojo", "Mojo", "Soft Drink", 25, "250ml", "Beverages", "/images/mojo.jpg", "vendor-akij-food");
+        insertProductWithVendor("mediplus", "Mediplus DS", "Toothpaste", 85, "100g", "Oral Care", "/images/mediplus.jpg", "vendor-anfords");
+        insertProductWithVendor("spa-water", "Spa Drinking Water", "Water", 20, "500ml", "Beverages", "/images/spa-water.jpg", "vendor-akij-food");
+        insertProductWithVendor("meril-soap", "Meril Milk Soap", "Moisturizing Soap", 35, "75g", "Skin Care", "/images/meril-soap.jpg", "vendor-square-toiletries");
+        insertProductWithVendor("shezan-juice", "Shezan Mango Juice", "Mango Juice", 35, "200ml", "Beverages", "/images/shezan-juice.jpg", "vendor-sajeeb");
+        insertProductWithVendor("pran-potata", "Pran Potata Spicy", "Biscuit", 40, "pack", "Snacks", "/images/pran-potata.jpg", "vendor-pran-rfl");
+        insertProductWithVendor("ruchi-chanachur", "Ruchi BBQ Chanachur", "Snack", 30, "150g", "Snacks", "/images/ruchi-chanachur.jpg", "vendor-square-food");
+        insertProductWithVendor("bashundhara-towel", "Bashundhara Towel", "Hand Towel", 80, "pack", "Home Care", "/images/bashundhara-towel.jpg", "vendor-bashundhara");
+        insertProductWithVendor("revive-lotion", "Revive Perfect Skin", "Moisturizing Lotion", 150, "100ml", "Skin Care", "/images/revive-lotion.jpg", "vendor-square-toiletries");
+        insertProductWithVendor("jui-oil", "Jui HairCare Oil", "Hair Oil", 95, "200ml", "Hair Care", "/images/jui-oil.jpg", "vendor-square-toiletries");
+        insertProductWithVendor("radhuni-tumeric", "Radhuni Tumeric", "Powder", 55, "100g", "Food & Grocery", "/images/radhuni-tumeric.jpg", "vendor-square-food");
+        insertProductWithVendor("pran-ghee", "Pran Premium Ghee", "Cooking Ghee", 250, "500g", "Food & Grocery", "/images/pran-ghee.jpg", "vendor-pran-dairy");
 
 
         insertReview("r1", "mojo", "Ahmed Khan", "Great energy drink! Very refreshing.", 5);
@@ -185,6 +200,159 @@ public class DatabaseManager {
 
         insertReview("r4", "shezan-juice", "Karim Hossain", "Love the mango flavor!", 5);
         updateRecommendationCount("shezan-juice", 18);
+    }
+    
+    private void seedVendors() {
+        // Create company vendor records for the manufacturers
+        String sql = "INSERT OR IGNORE INTO company_vendors (vendor_id, full_name, designation, company_name, email, password, phone_number, company_registration_number, bsti_certificate_number, company_address, tin_number, account_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            // Akij Food & Beverage Ltd.
+            pstmt.setString(1, "vendor-akij-food");
+            pstmt.setString(2, "Admin");
+            pstmt.setString(3, "Managing Director");
+            pstmt.setString(4, "Akij Food & Beverage Ltd.");
+            pstmt.setString(5, "contact@akijfood.com");
+            pstmt.setString(6, "password123");
+            pstmt.setString(7, "01711111111");
+            pstmt.setString(8, "CR-001");
+            pstmt.setString(9, "BSTI-001");
+            pstmt.setString(10, "Dhaka, Bangladesh");
+            pstmt.setString(11, "TIN-001");
+            pstmt.setString(12, "approved");
+            pstmt.executeUpdate();
+            
+            // Anfords Bangladesh Ltd.
+            pstmt.setString(1, "vendor-anfords");
+            pstmt.setString(2, "Admin");
+            pstmt.setString(3, "Managing Director");
+            pstmt.setString(4, "Anfords Bangladesh Ltd.");
+            pstmt.setString(5, "contact@anfords.com");
+            pstmt.setString(6, "password123");
+            pstmt.setString(7, "01711111112");
+            pstmt.setString(8, "CR-002");
+            pstmt.setString(9, "BSTI-002");
+            pstmt.setString(10, "Dhaka, Bangladesh");
+            pstmt.setString(11, "TIN-002");
+            pstmt.setString(12, "approved");
+            pstmt.executeUpdate();
+            
+            // Square Toiletries Ltd.
+            pstmt.setString(1, "vendor-square-toiletries");
+            pstmt.setString(2, "Admin");
+            pstmt.setString(3, "Managing Director");
+            pstmt.setString(4, "Square Toiletries Ltd.");
+            pstmt.setString(5, "contact@squaretoiletries.com");
+            pstmt.setString(6, "password123");
+            pstmt.setString(7, "01711111113");
+            pstmt.setString(8, "CR-003");
+            pstmt.setString(9, "BSTI-003");
+            pstmt.setString(10, "Dhaka, Bangladesh");
+            pstmt.setString(11, "TIN-003");
+            pstmt.setString(12, "approved");
+            pstmt.executeUpdate();
+            
+            // Sajeeb Group
+            pstmt.setString(1, "vendor-sajeeb");
+            pstmt.setString(2, "Admin");
+            pstmt.setString(3, "Managing Director");
+            pstmt.setString(4, "Sajeeb Group");
+            pstmt.setString(5, "contact@sajeeb.com");
+            pstmt.setString(6, "password123");
+            pstmt.setString(7, "01711111114");
+            pstmt.setString(8, "CR-004");
+            pstmt.setString(9, "BSTI-004");
+            pstmt.setString(10, "Dhaka, Bangladesh");
+            pstmt.setString(11, "TIN-004");
+            pstmt.setString(12, "approved");
+            pstmt.executeUpdate();
+            
+            // PRAN-RFL Group
+            pstmt.setString(1, "vendor-pran-rfl");
+            pstmt.setString(2, "Admin");
+            pstmt.setString(3, "Managing Director");
+            pstmt.setString(4, "PRAN-RFL Group");
+            pstmt.setString(5, "contact@pranrfl.com");
+            pstmt.setString(6, "password123");
+            pstmt.setString(7, "01711111115");
+            pstmt.setString(8, "CR-005");
+            pstmt.setString(9, "BSTI-005");
+            pstmt.setString(10, "Dhaka, Bangladesh");
+            pstmt.setString(11, "TIN-005");
+            pstmt.setString(12, "approved");
+            pstmt.executeUpdate();
+            
+            // Square Food & Beverage Limited
+            pstmt.setString(1, "vendor-square-food");
+            pstmt.setString(2, "Admin");
+            pstmt.setString(3, "Managing Director");
+            pstmt.setString(4, "Square Food & Beverage Limited");
+            pstmt.setString(5, "contact@squarefood.com");
+            pstmt.setString(6, "password123");
+            pstmt.setString(7, "01711111116");
+            pstmt.setString(8, "CR-006");
+            pstmt.setString(9, "BSTI-006");
+            pstmt.setString(10, "Dhaka, Bangladesh");
+            pstmt.setString(11, "TIN-006");
+            pstmt.setString(12, "approved");
+            pstmt.executeUpdate();
+            
+            // Bashundhara Paper Mills PLC
+            pstmt.setString(1, "vendor-bashundhara");
+            pstmt.setString(2, "Admin");
+            pstmt.setString(3, "Managing Director");
+            pstmt.setString(4, "Bashundhara Paper Mills PLC");
+            pstmt.setString(5, "contact@bashundhara.com");
+            pstmt.setString(6, "password123");
+            pstmt.setString(7, "01711111117");
+            pstmt.setString(8, "CR-007");
+            pstmt.setString(9, "BSTI-007");
+            pstmt.setString(10, "Dhaka, Bangladesh");
+            pstmt.setString(11, "TIN-007");
+            pstmt.setString(12, "approved");
+            pstmt.executeUpdate();
+            
+            // PRAN Dairy Ltd.
+            pstmt.setString(1, "vendor-pran-dairy");
+            pstmt.setString(2, "Admin");
+            pstmt.setString(3, "Managing Director");
+            pstmt.setString(4, "PRAN Dairy Ltd.");
+            pstmt.setString(5, "contact@prandairy.com");
+            pstmt.setString(6, "password123");
+            pstmt.setString(7, "01711111118");
+            pstmt.setString(8, "CR-008");
+            pstmt.setString(9, "BSTI-008");
+            pstmt.setString(10, "Dhaka, Bangladesh");
+            pstmt.setString(11, "TIN-008");
+            pstmt.setString(12, "approved");
+            pstmt.executeUpdate();
+            
+            System.out.println("Vendor seed data inserted successfully");
+            
+        } catch (SQLException e) {
+            System.err.println("Error seeding vendors: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    private void insertProductWithVendor(String productId, String name, String description, double price, String unit, String category, String imageUrl, String vendorId) {
+        String sql = "INSERT OR REPLACE INTO products (product_id, name, description, price, unit, category, image_url, vendor_id, recommendation_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, productId);
+            pstmt.setString(2, name);
+            pstmt.setString(3, description);
+            pstmt.setDouble(4, price);
+            pstmt.setString(5, unit);
+            pstmt.setString(6, category);
+            pstmt.setString(7, imageUrl);
+            pstmt.setString(8, vendorId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -227,6 +395,18 @@ public class DatabaseManager {
                         rs.getString("image_url")
                 );
                 product.setRecommendationCount(rs.getInt("recommendation_count"));
+                
+                // Get vendor_id (might be null for old products)
+                String vendorId = rs.getString("vendor_id");
+                product.setVendorId(vendorId);
+                
+                // Get manufacturer name from vendor (only if vendor_id exists)
+                if (vendorId != null && !vendorId.isEmpty()) {
+                    String manufacturerName = getManufacturerName(vendorId);
+                    product.setManufacturerName(manufacturerName);
+                } else {
+                    product.setManufacturerName("Unknown Manufacturer");
+                }
 
                 // Load reviews
                 List<Review> reviews = getReviewsForProduct(productId);
@@ -240,6 +420,42 @@ public class DatabaseManager {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    // Get manufacturer name by vendor ID
+    private String getManufacturerName(String vendorId) {
+        // Check company vendors first
+        String sql = "SELECT company_name FROM company_vendors WHERE vendor_id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, vendorId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("company_name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        // Check retail vendors
+        sql = "SELECT shop_name FROM retail_vendors WHERE vendor_id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, vendorId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("shop_name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return "Unknown Manufacturer";
+    }
+    
+    // Public version of getManufacturerName
+    public String getManufacturerNamePublic(String vendorId) {
+        return getManufacturerName(vendorId);
     }
 
     public List<Product> getAllProducts() {
@@ -900,7 +1116,7 @@ public class DatabaseManager {
     // Add product by vendor
     public boolean addProductByVendor(String productId, String name, String description, double price, 
                                      String unit, String category, String imageUrl, String vendorId) {
-        String sql = "INSERT INTO products (product_id, name, description, price, unit, category, image_url, recommendation_count) VALUES (?, ?, ?, ?, ?, ?, ?, 0)";
+        String sql = "INSERT INTO products (product_id, name, description, price, unit, category, image_url, vendor_id, recommendation_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, productId);
@@ -910,6 +1126,7 @@ public class DatabaseManager {
             pstmt.setString(5, unit);
             pstmt.setString(6, category);
             pstmt.setString(7, imageUrl);
+            pstmt.setString(8, vendorId);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();

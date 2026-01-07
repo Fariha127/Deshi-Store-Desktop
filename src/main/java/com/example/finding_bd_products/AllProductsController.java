@@ -1,6 +1,5 @@
 package com.example.finding_bd_products;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,16 +19,10 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 
-public class NewProductsController {
-
+public class AllProductsController {
     @FXML
-    private GridPane productsGrid;
-
-    @FXML
-    private TextField searchField;
+    private Button backButton;
 
     @FXML
     private Button homeBtn;
@@ -51,6 +43,9 @@ public class NewProductsController {
     private Button favouriteCategoriesBtn;
 
     @FXML
+    private GridPane allProductsGrid;
+
+    @FXML
     private Button loginBtn;
 
     @FXML
@@ -67,54 +62,61 @@ public class NewProductsController {
 
     private DatabaseManager dbManager;
 
-    public void initialize() {
-        dbManager = DatabaseManager.getInstance();
-        if (productsGrid != null) {
-            loadProducts();
-        }
-        
-        // Show "Add Product" button only for logged-in vendors
-        if (addProductBtn != null && VendorSession.getInstance().isLoggedIn()) {
-            addProductBtn.setVisible(true);
-            addProductBtn.setManaged(true);
-        }
-        
-        // Show "My Profile" button only for logged-in users (not vendors)
-        if (myProfileBtn != null && UserSession.getInstance().isLoggedIn()) {
-            myProfileBtn.setVisible(true);
-            myProfileBtn.setManaged(true);
-        }
-        
-        // Hide login/signup buttons and show logout button if user or vendor is logged in
-        if (UserSession.getInstance().isLoggedIn() || VendorSession.getInstance().isLoggedIn()) {
-            if (loginBtn != null) {
-                loginBtn.setVisible(false);
-                loginBtn.setManaged(false);
-            }
-            if (signupBtn != null) {
-                signupBtn.setVisible(false);
-                signupBtn.setManaged(false);
-            }
-            if (logoutBtn != null) {
-                logoutBtn.setVisible(true);
-                logoutBtn.setManaged(true);
-            }
-        }
+    @FXML
+    protected void goBack() {
+        loadPage("Home.fxml");
+    }
+
+    @FXML
+    protected void showHome() {
+        loadPage("Home.fxml");
+    }
+
+    @FXML
+    protected void showAllProducts() {
+        // Already on All Products page
     }
 
     @FXML
     protected void goToLogin() {
-        loadPage("Login.fxml");
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+            Stage stage = (Stage) loginBtn.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     protected void goToSignup() {
-        loadPage("SignupUser.fxml");
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("SignupUser.fxml"));
+            Stage stage = (Stage) signupBtn.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    protected void goBack() {
-        loadPage("Home.fxml");
+    protected void showCategories() {
+        loadPage("Categories.fxml");
+    }
+
+    @FXML
+    protected void showNewlyAdded() {
+        loadPage("NewProducts.fxml");
+    }
+
+    @FXML
+    protected void showFavourites() {
+        loadPage("MyFavouriteProducts.fxml");
+    }
+
+    @FXML
+    protected void showFavouriteCategories() {
+        loadPage("FavouriteCategories.fxml");
     }
     
     @FXML
@@ -169,10 +171,45 @@ public class NewProductsController {
         }
     }
 
-    private void loadProducts() {
-        productsGrid.getChildren().clear();
+    public void initialize() {
+        dbManager = DatabaseManager.getInstance();
+        if (allProductsGrid != null) {
+            loadAllProducts();
+        }
+        
+        // Show "Add Product" button only for logged-in vendors
+        if (addProductBtn != null && VendorSession.getInstance().isLoggedIn()) {
+            addProductBtn.setVisible(true);
+            addProductBtn.setManaged(true);
+        }
+        
+        // Show "My Profile" button only for logged-in users (not vendors)
+        if (myProfileBtn != null && UserSession.getInstance().isLoggedIn()) {
+            myProfileBtn.setVisible(true);
+            myProfileBtn.setManaged(true);
+        }
+        
+        // Hide login/signup buttons and show logout button if user or vendor is logged in
+        if (UserSession.getInstance().isLoggedIn() || VendorSession.getInstance().isLoggedIn()) {
+            if (loginBtn != null) {
+                loginBtn.setVisible(false);
+                loginBtn.setManaged(false);
+            }
+            if (signupBtn != null) {
+                signupBtn.setVisible(false);
+                signupBtn.setManaged(false);
+            }
+            if (logoutBtn != null) {
+                logoutBtn.setVisible(true);
+                logoutBtn.setManaged(true);
+            }
+        }
+    }
 
-        // Get latest 12 products from database (reverse order to show newest first)
+    private void loadAllProducts() {
+        allProductsGrid.getChildren().clear();
+
+        // Get all products from database
         java.util.List<Product> allProducts = dbManager.getAllProducts();
         
         if (allProducts.isEmpty()) {
@@ -180,22 +217,16 @@ public class NewProductsController {
             return;
         }
         
-        // Reverse the list to show newest products first (assuming higher IDs are newer)
-        java.util.Collections.reverse(allProducts);
-        
         System.out.println("Loaded " + allProducts.size() + " products from database");
 
         int col = 0;
         int row = 0;
         
-        // Display up to 12 products (latest)
-        int maxProducts = Math.min(allProducts.size(), 12);
-        
-        for (int i = 0; i < maxProducts; i++) {
-            Product product = allProducts.get(i);
+        // Display all products
+        for (Product product : allProducts) {
             if (product != null) {
                 VBox card = createProductCard(product);
-                productsGrid.add(card, col, row);
+                allProductsGrid.add(card, col, row);
                 col++;
                 if (col > 2) {
                     col = 0;
@@ -336,7 +367,7 @@ public class NewProductsController {
                 System.err.println("Controller is null!");
             }
 
-            Stage stage = (Stage) homeBtn.getScene().getWindow();
+            Stage stage = (Stage) backButton.getScene().getWindow();
             stage.getScene().setRoot(root);
         } catch (IOException e) {
             System.err.println("Error loading ProductDetails.fxml");
@@ -347,54 +378,17 @@ public class NewProductsController {
         }
     }
 
-    @FXML
-    protected void showHome() {
-        loadPage("Home.fxml");
-    }
-
-    @FXML
-    protected void showAllProducts() {
-        loadPage("AllProducts.fxml");
-    }
-
-    @FXML
-    protected void showCategories() {
-        loadPage("Categories.fxml");
-    }
-
-    @FXML
-    protected void showNewlyAdded() {
-        // Already on new products page
-    }
-
-    @FXML
-    protected void showFavourites() {
-        loadPage("MyFavouriteProducts.fxml");
-    }
-
-    @FXML
-    protected void showFavouriteCategories() {
-        loadPage("FavouriteCategories.fxml");
-    }
-
-    @FXML
-    protected void onSearch() {
-        String searchText = searchField.getText();
-        System.out.println("Searching for: " + searchText);
-    }
-
     private void loadPage(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent root = loader.load();
-
-            Stage stage = (Stage) homeBtn.getScene().getWindow();
+            Stage stage = (Stage) backButton.getScene().getWindow();
             stage.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
+
     private void showLoginAlert() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Login Required");

@@ -36,6 +36,9 @@ public class MyFavouriteProductsController {
     private Button homeBtn;
 
     @FXML
+    private Button allProductsBtn;
+
+    @FXML
     private Button categoriesBtn;
 
     @FXML
@@ -231,6 +234,11 @@ public class MyFavouriteProductsController {
     @FXML
     protected void showHome() {
         loadPage("Home.fxml");
+    }
+
+    @FXML
+    protected void showAllProducts() {
+        loadPage("AllProducts.fxml");
     }
 
     @FXML

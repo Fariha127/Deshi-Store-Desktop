@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -91,11 +92,20 @@
                                 </DropShadow>
                             </effect>
                             <children>
-                                <Region prefHeight="250.0" prefWidth="300.0" style="-fx-background-color: #F5F5F5; -fx-background-radius: 10;" />
+                                <ImageView fx:id="productImageView" fitHeight="300.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" style="-fx-background-color: #F5F5F5;">
+                                    <VBox.margin>
+                                        <Insets bottom="15.0" />
+                                    </VBox.margin>
+                                </ImageView>
                                 <Label fx:id="productNameLabel" text="Product Name" textFill="#333333">
                                     <font>
                                         <Font name="System Bold" size="28.0" />
                                     </font>
+                                </Label>
+                                <Label fx:id="manufacturerLabel" text="Manufacturer: Unknown" textFill="#666666" style="-fx-font-size: 14px; -fx-font-style: italic;">
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" top="5.0" />
+                                    </VBox.margin>
                                 </Label>
                                 <Label fx:id="productCategoryLabel" style="-fx-background-color: #2E7D32; -fx-text-fill: white; -fx-padding: 5 12 5 12; -fx-font-size: 12; -fx-background-radius: 15;" text="Category">
                                     <VBox.margin>

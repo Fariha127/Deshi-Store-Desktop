@@ -11,6 +11,8 @@ public class Product {
     private String unit;
     private String category;
     private String imageUrl;
+    private String vendorId;
+    private String manufacturerName;
     private int recommendationCount;
     private List<Review> reviews;
     private double averageRating;
@@ -23,6 +25,8 @@ public class Product {
         this.unit = unit;
         this.category = category;
         this.imageUrl = imageUrl;
+        this.vendorId = null;
+        this.manufacturerName = null;
         this.recommendationCount = 0;
         this.reviews = new ArrayList<>();
         this.averageRating = 0.0;
@@ -80,6 +84,12 @@ public class Product {
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public String getVendorId() { return vendorId; }
+    public void setVendorId(String vendorId) { this.vendorId = vendorId; }
+
+    public String getManufacturerName() { return manufacturerName; }
+    public void setManufacturerName(String manufacturerName) { this.manufacturerName = manufacturerName; }
 
     public int getRecommendationCount() { return recommendationCount; }
     public void setRecommendationCount(int recommendationCount) { this.recommendationCount = recommendationCount; }

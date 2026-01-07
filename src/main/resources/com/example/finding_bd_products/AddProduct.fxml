@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.image.ImageView?>
+
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.finding_bd_products.AddProductController">
+    <VBox alignment="TOP_CENTER" spacing="20.0" style="-fx-background-color: linear-gradient(to bottom, #2E7D32, #4CAF50);">
+        <padding>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
+        </padding>
+
+        <!-- Back Button -->
+        <HBox alignment="TOP_LEFT" spacing="10.0">
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" style="-fx-background-color: rgba(255, 255, 255, 0.2); -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand; -fx-padding: 8 15 8 15; -fx-border-color: white; -fx-border-width: 1.5; -fx-border-radius: 5;" text="← Back" />
+        </HBox>
+
+        <!-- Title -->
+        <Text text="Add New Product" style="-fx-fill: white;">
+            <font>
+                <Font name="System Bold" size="28.0"/>
+            </font>
+        </Text>
+
+        <Text text="Fill in the product details below" style="-fx-fill: white;">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Text>
+
+        <!-- Form Container -->
+        <VBox spacing="15.0" alignment="CENTER" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 30;" maxWidth="600">
+
+            <!-- Product Name -->
+            <VBox spacing="5.0">
+                <Label text="Product Name: *" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <TextField fx:id="productNameField" promptText="Enter product name" prefWidth="500" style="-fx-background-color: #C9F6C1; -fx-text-fill: #52544F; -fx-prompt-text-fill: #979A93;"/>
+            </VBox>
+
+            <!-- Manufacturer/Company Name -->
+            <VBox spacing="5.0">
+                <Label text="Manufacturer/Company Name: *" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <TextField fx:id="manufacturerField" promptText="Auto-filled from vendor account" prefWidth="500" style="-fx-background-color: #E8E8E8; -fx-text-fill: #52544F; -fx-prompt-text-fill: #979A93;" editable="false"/>
+            </VBox>
+
+            <!-- Category -->
+            <VBox spacing="5.0">
+                <Label text="Category: *" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <ComboBox fx:id="categoryComboBox" promptText="Select category" prefWidth="500" style="-fx-background-color: #C9F6C1;"/>
+            </VBox>
+
+            <!-- Description -->
+            <VBox spacing="5.0">
+                <Label text="Description: *" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <TextArea fx:id="descriptionArea" promptText="Enter product description" prefRowCount="4" prefWidth="500" style="-fx-background-color: #C9F6C1; -fx-text-fill: #52544F; -fx-prompt-text-fill: #979A93;"/>
+            </VBox>
+
+            <!-- Price -->
+            <VBox spacing="5.0">
+                <Label text="Price (BDT): *" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <TextField fx:id="priceField" promptText="e.g., 250.00" prefWidth="500" style="-fx-background-color: #C9F6C1; -fx-text-fill: #52544F; -fx-prompt-text-fill: #979A93;"/>
+            </VBox>
+
+            <!-- Volume/Unit -->
+            <VBox spacing="5.0">
+                <Label text="Volume/Unit: *" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <TextField fx:id="volumeField" promptText="e.g., 500g, 1L, per piece" prefWidth="500" style="-fx-background-color: #C9F6C1; -fx-text-fill: #52544F; -fx-prompt-text-fill: #979A93;"/>
+            </VBox>
+
+            <!-- Image Upload -->
+            <VBox spacing="5.0">
+                <Label text="Product Image: *" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                    <TextField fx:id="imagePathField" promptText="Image path or URL" prefWidth="390" editable="false" style="-fx-background-color: #C9F6C1; -fx-text-fill: #52544F; -fx-prompt-text-fill: #979A93;"/>
+                    <Button text="Browse" onAction="#handleBrowseImage" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-padding: 8 20; -fx-background-radius: 5;"/>
+                </HBox>
+            </VBox>
+
+            <!-- Image Preview -->
+            <VBox spacing="5.0" alignment="CENTER">
+                <Label text="Image Preview:" style="-fx-font-size: 12px; -fx-font-weight: bold;"/>
+                <ImageView fx:id="imagePreview" fitHeight="200" fitWidth="200" preserveRatio="true" style="-fx-border-color: #ccc; -fx-border-width: 1;"/>
+            </VBox>
+
+            <!-- Error/Success Label -->
+            <Label fx:id="messageLabel" wrapText="true" maxWidth="500" style="-fx-font-size: 12px; -fx-text-fill: #f44336;"/>
+
+            <!-- Buttons -->
+            <HBox spacing="20.0" alignment="CENTER">
+                <Button text="Add Product" onAction="#handleAddProduct" prefWidth="150" style="-fx-background-color: linear-gradient(to bottom right, #FF6B35, #F7931E); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px; -fx-background-radius: 5;"/>
+                <Button text="Clear Form" onAction="#handleClearForm" prefWidth="150" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px; -fx-background-radius: 5;"/>
+            </HBox>
+
+            <Text text="* Required fields" style="-fx-fill: #666;">
+                <font>
+                    <Font size="12.0"/>
+                </font>
+            </Text>
+
+        </VBox>
+    </VBox>
+</ScrollPane>

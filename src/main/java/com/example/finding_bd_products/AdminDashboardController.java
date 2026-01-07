@@ -339,7 +339,7 @@ public class AdminDashboardController {
             
             Stage stage = (Stage) mainTabPane.getScene().getWindow();
             stage.setScene(new Scene(root, 900, 700));
-            stage.setTitle("Finding BD Products - Login");
+            stage.setTitle("Deshi Store - Login");
         } catch (Exception e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to logout: " + e.getMessage());
