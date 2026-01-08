@@ -1,6 +1,8 @@
 package com.example.finding_bd_products;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -54,6 +56,9 @@ public class MyFavouriteProductsController {
     private Button addProductBtn;
 
     @FXML
+    private Button myProductsBtn;
+
+    @FXML
     private Button myProfileBtn;
 
     @FXML
@@ -67,6 +72,7 @@ public class MyFavouriteProductsController {
 
     private List<Product> favouriteProducts = new ArrayList<>();
     private DatabaseManager dbManager;
+    private ObservableList<Product> allFavouriteProducts = FXCollections.observableArrayList();
     private Stage stage;
 
     @FXML
@@ -78,10 +84,25 @@ public class MyFavouriteProductsController {
             showEmptyState();
         }
         
+        // Add search listener for real-time filtering
+        if (searchField != null) {
+            searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (allFavouriteProducts != null) {
+                    filterProducts(newValue);
+                }
+            });
+        }
+        
         // Show "Add Product" button only for logged-in vendors
         if (addProductBtn != null && VendorSession.getInstance().isLoggedIn()) {
             addProductBtn.setVisible(true);
             addProductBtn.setManaged(true);
+        }
+        
+        // Show "My Products" button only for logged-in vendors
+        if (myProductsBtn != null && VendorSession.getInstance().isLoggedIn()) {
+            myProductsBtn.setVisible(true);
+            myProductsBtn.setManaged(true);
         }
         
         // Show "My Profile" button only for logged-in users (not vendors)
@@ -117,12 +138,24 @@ public class MyFavouriteProductsController {
     }
 
     private void loadFavouriteProducts() {
-        productsGrid.getChildren().clear();
         favouriteProducts = dbManager.getFavouriteProducts();
         
         if (favouriteProducts.isEmpty()) {
-            Label emptyLabel = new Label("No favourite products yet. Start adding products to your favourites!");
-            emptyLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #888888; -fx-padding: 50;");
+            allFavouriteProducts.clear();
+            displayProducts(allFavouriteProducts);
+            return;
+        }
+        
+        allFavouriteProducts.setAll(favouriteProducts);
+        displayProducts(allFavouriteProducts);
+    }
+    
+    private void displayProducts(javafx.collections.ObservableList<Product> products) {
+        productsGrid.getChildren().clear();
+        
+        if (products.isEmpty()) {
+            Label emptyLabel = new Label("No products found");
+            emptyLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: #888888; -fx-padding: 40;");
             VBox emptyBox = new VBox(emptyLabel);
             emptyBox.setStyle("-fx-alignment: center;");
             productsGrid.add(emptyBox, 0, 0, 3, 1);
@@ -131,7 +164,7 @@ public class MyFavouriteProductsController {
         
         int col = 0;
         int row = 0;
-        for (Product product : favouriteProducts) {
+        for (Product product : products) {
             VBox card = createProductCard(product);
             productsGrid.add(card, col, row);
             col++;
@@ -326,6 +359,19 @@ public class MyFavouriteProductsController {
     }
 
     @FXML
+    protected void goToMyProducts() {
+        if (!VendorSession.getInstance().isLoggedIn()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Login Required");
+            alert.setHeaderText(null);
+            alert.setContentText("Please login as a vendor to view your products.");
+            alert.showAndWait();
+            return;
+        }
+        loadPage("VendorProductsList.fxml");
+    }
+
+    @FXML
     protected void handleLogout() {
         try {
             // Clear both user and vendor sessions
@@ -343,8 +389,29 @@ public class MyFavouriteProductsController {
 
     @FXML
     protected void onSearch() {
-        String searchText = searchField.getText();
-        System.out.println("Searching for: " + searchText);
+        if (searchField != null) {
+            filterProducts(searchField.getText());
+        }
+    }
+    
+    private void filterProducts(String searchText) {
+        if (searchText == null || searchText.trim().isEmpty()) {
+            displayProducts(allFavouriteProducts);
+            return;
+        }
+        
+        String searchLower = searchText.toLowerCase().trim();
+        javafx.collections.ObservableList<Product> filteredProducts = javafx.collections.FXCollections.observableArrayList();
+        
+        for (Product product : allFavouriteProducts) {
+            if (product.getName().toLowerCase().contains(searchLower) ||
+                product.getCategory().toLowerCase().contains(searchLower) ||
+                product.getProductId().toLowerCase().contains(searchLower)) {
+                filteredProducts.add(product);
+            }
+        }
+        
+        displayProducts(filteredProducts);
     }
 
     private void loadPage(String fxmlFile) {

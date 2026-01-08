@@ -2,6 +2,8 @@ package com.example.finding_bd_products;
 
 import com.example.finding_bd_products.CategoryProductsController;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -16,6 +18,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CategoriesController {
     @FXML
@@ -46,6 +50,9 @@ public class CategoriesController {
     private Button addProductBtn;
 
     @FXML
+    private Button myProductsBtn;
+
+    @FXML
     private Button myProfileBtn;
 
     @FXML
@@ -57,17 +64,36 @@ public class CategoriesController {
     @FXML
     private Button signupBtn;
 
+    @FXML
+    private javafx.scene.layout.GridPane categoriesGrid;
+
     private DatabaseManager dbManager;
+    private ObservableList<String> allCategories = FXCollections.observableArrayList();
+    private List<VBox> originalCategoryCards = new ArrayList<>();
 
     @FXML
     public void initialize() {
         dbManager = DatabaseManager.getInstance();
+        loadCategories();
         addFavoriteButtons();
+        
+        // Add search listener for real-time filtering
+        if (searchField != null) {
+            searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filterCategories(newValue);
+            });
+        }
         
         // Show "Add Product" button only for logged-in vendors
         if (addProductBtn != null && VendorSession.getInstance().isLoggedIn()) {
             addProductBtn.setVisible(true);
             addProductBtn.setManaged(true);
+        }
+        
+        // Show "My Products" button only for logged-in vendors
+        if (myProductsBtn != null && VendorSession.getInstance().isLoggedIn()) {
+            myProductsBtn.setVisible(true);
+            myProductsBtn.setManaged(true);
         }
         
         // Show "My Profile" button only for logged-in users (not vendors)
@@ -250,6 +276,19 @@ public class CategoriesController {
     }
 
     @FXML
+    protected void goToMyProducts() {
+        if (!VendorSession.getInstance().isLoggedIn()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Login Required");
+            alert.setHeaderText(null);
+            alert.setContentText("Please login as a vendor to view your products.");
+            alert.showAndWait();
+            return;
+        }
+        loadPage("VendorProductsList.fxml");
+    }
+
+    @FXML
     protected void handleLogout() {
         try {
             // Clear both user and vendor sessions
@@ -267,7 +306,82 @@ public class CategoriesController {
 
     @FXML
     protected void onSearch() {
-        String searchText = searchField.getText();
+        if (searchField != null) {
+            filterCategories(searchField.getText());
+        }
+    }
+    
+    private void loadCategories() {
+        if (categoriesGrid != null) {
+            // Store original category cards and names
+            allCategories.clear();
+            originalCategoryCards.clear();
+            for (javafx.scene.Node node : categoriesGrid.getChildren()) {
+                if (node instanceof VBox) {
+                    VBox categoryCard = (VBox) node;
+                    String categoryName = getCategoryNameFromCard(categoryCard);
+                    if (categoryName != null && !categoryName.equals("Unknown")) {
+                        allCategories.add(categoryName);
+                        originalCategoryCards.add(categoryCard);
+                    }
+                }
+            }
+        }
+    }
+    
+    private void filterCategories(String searchText) {
+        if (categoriesGrid == null) return;
+        
+        if (searchText == null || searchText.trim().isEmpty()) {
+            // Restore all categories in original order
+            categoriesGrid.getChildren().clear();
+            int col = 0;
+            int row = 0;
+            for (VBox categoryCard : originalCategoryCards) {
+                categoriesGrid.add(categoryCard, col, row);
+                col++;
+                if (col > 2) {
+                    col = 0;
+                    row++;
+                }
+            }
+            return;
+        }
+        
+        String searchLower = searchText.toLowerCase().trim();
+        List<VBox> matchingCategories = new ArrayList<>();
+        
+        // Collect matching categories in original order
+        for (VBox categoryCard : originalCategoryCards) {
+            String categoryName = getCategoryNameFromCard(categoryCard);
+            if (categoryName.toLowerCase().contains(searchLower)) {
+                matchingCategories.add(categoryCard);
+            }
+        }
+        
+        // Clear and rebuild grid with matching categories in order
+        categoriesGrid.getChildren().clear();
+        
+        if (matchingCategories.isEmpty()) {
+            // Show "no categories found" message
+            Label noResultsLabel = new Label("No categories found");
+            noResultsLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: #888888; -fx-padding: 40;");
+            VBox noResultsBox = new VBox(noResultsLabel);
+            noResultsBox.setStyle("-fx-alignment: center;");
+            categoriesGrid.add(noResultsBox, 0, 0, 3, 1);
+        } else {
+            // Add matching categories in order
+            int col = 0;
+            int row = 0;
+            for (VBox categoryCard : matchingCategories) {
+                categoriesGrid.add(categoryCard, col, row);
+                col++;
+                if (col > 2) {
+                    col = 0;
+                    row++;
+                }
+            }
+        }
     }
 
     @FXML

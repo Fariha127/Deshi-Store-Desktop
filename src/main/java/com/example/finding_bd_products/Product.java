@@ -16,6 +16,9 @@ public class Product {
     private int recommendationCount;
     private List<Review> reviews;
     private double averageRating;
+    private String approvalStatus;
+    private String rejectionReason;
+    private String originalProductId;
 
     public Product(String productId, String name, String description, double price, String unit, String category, String imageUrl) {
         this.productId = productId;
@@ -98,4 +101,13 @@ public class Product {
     public void setReviews(List<Review> reviews) { this.reviews = reviews; }
 
     public double getAverageRating() { return averageRating; }
+
+    public String getApprovalStatus() { return approvalStatus; }
+    public void setApprovalStatus(String approvalStatus) { this.approvalStatus = approvalStatus; }
+
+    public String getRejectionReason() { return rejectionReason; }
+    public void setRejectionReason(String rejectionReason) { this.rejectionReason = rejectionReason; }
+
+    public String getOriginalProductId() { return originalProductId; }
+    public void setOriginalProductId(String originalProductId) { this.originalProductId = originalProductId; }
 }

@@ -116,7 +116,7 @@ public class LoginController {
                     if (companyVendor != null) {
                         VendorSession.getInstance().loginCompanyVendor(companyVendor);
                         loginSuccess = true;
-                        redirectPage = "Home.fxml";
+                        redirectPage = "VendorDashboard.fxml";
                     } else {
                         errorLabel.setText("Incorrect email or password");
                     }
@@ -127,7 +127,7 @@ public class LoginController {
                     if (retailVendor != null) {
                         VendorSession.getInstance().loginRetailVendor(retailVendor);
                         loginSuccess = true;
-                        redirectPage = "Home.fxml";
+                        redirectPage = "VendorDashboard.fxml";
                     } else {
                         errorLabel.setText("Incorrect email or password");
                     }
@@ -177,6 +177,19 @@ public class LoginController {
     @FXML
     private void goBack(ActionEvent event) {
         navigateToPage(event, "Home.fxml");
+    }
+
+    @FXML
+    private void handleBackToHome() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));
+            Stage stage = (Stage) emailField.getScene().getWindow();
+            stage.setScene(new Scene(root, 1200, 800));
+            stage.setTitle("Deshi Store - Home");
+        } catch (IOException e) {
+            errorLabel.setText("Unable to load home page");
+            e.printStackTrace();
+        }
     }
 
     private void navigateToPage(ActionEvent event, String fxmlFile) {

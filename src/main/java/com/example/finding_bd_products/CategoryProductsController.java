@@ -1,6 +1,8 @@
 package com.example.finding_bd_products;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -59,6 +61,7 @@ public class CategoryProductsController {
 
     private String currentCategory;
     private DatabaseManager dbManager;
+    private ObservableList<Product> allCategoryProducts = FXCollections.observableArrayList();
 
     public void initialize() {
         dbManager = DatabaseManager.getInstance();
@@ -81,17 +84,39 @@ public class CategoryProductsController {
         categoryTitle.setText(categoryName);
         categoryDescription.setText("Showing all products in " + categoryName);
         loadProducts(categoryName);
+        
+        // Add search listener for real-time filtering
+        if (searchField != null) {
+            searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (allCategoryProducts != null) {
+                    filterProducts(newValue);
+                }
+            });
+        }
     }
 
     private void loadProducts(String categoryName) {
-        productsGrid.getChildren().clear();
-
         List<Product> products = dbManager.getProductsByCategory(categoryName);
 
         if (products == null || products.isEmpty()) {
-            Label noProducts = new Label("No products available in this category");
-            noProducts.setStyle("-fx-font-size: 16px; -fx-text-fill: #888888;");
-            productsGrid.add(noProducts, 0, 0);
+            allCategoryProducts.clear();
+            displayProducts(allCategoryProducts);
+            return;
+        }
+        
+        allCategoryProducts.setAll(products);
+        displayProducts(allCategoryProducts);
+    }
+    
+    private void displayProducts(javafx.collections.ObservableList<Product> products) {
+        productsGrid.getChildren().clear();
+
+        if (products.isEmpty()) {
+            Label noProducts = new Label("No products found");
+            noProducts.setStyle("-fx-font-size: 18px; -fx-text-fill: #888888; -fx-padding: 40;");
+            VBox noProductsBox = new VBox(noProducts);
+            noProductsBox.setStyle("-fx-alignment: center;");
+            productsGrid.add(noProductsBox, 0, 0, 3, 1);
             return;
         }
 
@@ -283,8 +308,29 @@ public class CategoryProductsController {
     }
 
     @FXML    protected void onSearch() {
-        String searchText = searchField.getText();
-        System.out.println("Searching for: " + searchText);
+        if (searchField != null) {
+            filterProducts(searchField.getText());
+        }
+    }
+    
+    private void filterProducts(String searchText) {
+        if (searchText == null || searchText.trim().isEmpty()) {
+            displayProducts(allCategoryProducts);
+            return;
+        }
+        
+        String searchLower = searchText.toLowerCase().trim();
+        javafx.collections.ObservableList<Product> filteredProducts = javafx.collections.FXCollections.observableArrayList();
+        
+        for (Product product : allCategoryProducts) {
+            if (product.getName().toLowerCase().contains(searchLower) ||
+                product.getCategory().toLowerCase().contains(searchLower) ||
+                product.getProductId().toLowerCase().contains(searchLower)) {
+                filteredProducts.add(product);
+            }
+        }
+        
+        displayProducts(filteredProducts);
     }
 
     private void loadPage(String fxmlFile) {

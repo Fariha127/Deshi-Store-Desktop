@@ -161,7 +161,7 @@ public class AddProductController {
         // Add product to database
         if (dbManager.addProductByVendor(productId, name, description, price, volume, category, imagePath, currentVendorId)) {
             showAlert(Alert.AlertType.INFORMATION, "Success", 
-                "Product '" + name + "' has been added successfully!\nProduct ID: " + productId);
+                "Product '" + name + "' has been added successfully!\nProduct ID: " + productId + "\n\nStatus: Waiting for admin approval");
             handleClearForm();
         } else {
             messageLabel.setText("Failed to add product. Please try again.");
@@ -198,15 +198,15 @@ public class AddProductController {
     @FXML
     private void handleBackToHome() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("VendorDashboard.fxml"));
             Parent root = loader.load();
             
             Stage stage = (Stage) productNameField.getScene().getWindow();
             stage.getScene().setRoot(root);
-            stage.setTitle("Deshi Store - Home");
+            stage.setTitle("Vendor Dashboard");
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to go back to home: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to go back to dashboard: " + e.getMessage());
         }
     }
 

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.image.ImageView?>
+
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.finding_bd_products.VendorProductDetailsController">
+    <VBox alignment="TOP_CENTER" spacing="20.0" style="-fx-background-color: linear-gradient(to bottom, #2E7D32, #4CAF50);">
+        <padding>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
+        </padding>
+
+        <!-- Title -->
+        <Text text="Product Details" style="-fx-fill: white;">
+            <font>
+                <Font name="System Bold" size="28.0"/>
+            </font>
+        </Text>
+
+        <Text text="View and manage your product information" style="-fx-fill: white;">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Text>
+
+        <!-- Form Container -->
+        <VBox spacing="15.0" alignment="CENTER" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 30;" maxWidth="600">
+
+            <!-- Product Image -->
+            <VBox spacing="5.0" alignment="CENTER">
+                <Label text="Product Image:" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <ImageView fx:id="productImageView" fitWidth="300" fitHeight="300" preserveRatio="true" style="-fx-border-color: #E0E0E0; -fx-border-width: 2; -fx-border-radius: 5;"/>
+            </VBox>
+
+            <!-- Product ID -->
+            <VBox spacing="5.0">
+                <Label text="Product ID:" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <TextField fx:id="productIdField" editable="false" prefWidth="500" style="-fx-background-color: #E8E8E8; -fx-text-fill: #52544F;"/>
+            </VBox>
+
+            <!-- Product Name -->
+            <VBox spacing="5.0">
+                <Label text="Product Name:" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <TextField fx:id="productNameField" editable="false" prefWidth="500" style="-fx-background-color: #E8E8E8; -fx-text-fill: #52544F;"/>
+            </VBox>
+
+            <!-- Manufacturer/Company Name -->
+            <VBox spacing="5.0">
+                <Label text="Manufacturer/Company Name:" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <TextField fx:id="manufacturerField" editable="false" prefWidth="500" style="-fx-background-color: #E8E8E8; -fx-text-fill: #52544F;"/>
+            </VBox>
+
+            <!-- Category -->
+            <VBox spacing="5.0">
+                <Label text="Category:" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <TextField fx:id="categoryField" editable="false" prefWidth="500" style="-fx-background-color: #E8E8E8; -fx-text-fill: #52544F;"/>
+            </VBox>
+
+            <!-- Description -->
+            <VBox spacing="5.0">
+                <Label text="Description:" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <TextArea fx:id="descriptionArea" editable="false" prefWidth="500" prefRowCount="4" wrapText="true" style="-fx-background-color: #E8E8E8; -fx-text-fill: #52544F;"/>
+            </VBox>
+
+            <!-- Price -->
+            <VBox spacing="5.0">
+                <Label text="Price (৳):" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <TextField fx:id="priceField" editable="false" prefWidth="500" style="-fx-background-color: #E8E8E8; -fx-text-fill: #52544F;"/>
+            </VBox>
+
+            <!-- Unit -->
+            <VBox spacing="5.0">
+                <Label text="Unit:" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <TextField fx:id="unitField" editable="false" prefWidth="500" style="-fx-background-color: #E8E8E8; -fx-text-fill: #52544F;"/>
+            </VBox>
+
+            <!-- Approval Status -->
+            <VBox spacing="5.0">
+                <Label text="Approval Status:" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <TextField fx:id="statusField" editable="false" prefWidth="500" style="-fx-background-color: #E8E8E8; -fx-text-fill: #52544F; -fx-font-weight: bold;"/>
+            </VBox>
+
+            <!-- Rejection Reason (if rejected) -->
+            <VBox fx:id="rejectionReasonBox" spacing="5.0" visible="false" managed="false">
+                <Label text="Rejection Reason:" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #f44336;"/>
+                <TextArea fx:id="rejectionReasonArea" editable="false" prefWidth="500" prefRowCount="3" wrapText="true" style="-fx-background-color: #ffebee; -fx-text-fill: #c62828; -fx-border-color: #f44336; -fx-border-width: 2;"/>
+            </VBox>
+
+            <!-- Buttons -->
+            <HBox spacing="20.0" alignment="CENTER">
+                <Button fx:id="editBtn" text="Edit Product" onAction="#handleEditProduct" prefWidth="150" style="-fx-background-color: linear-gradient(to bottom right, #FF6B35, #F7931E); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px; -fx-background-radius: 5;"/>
+                <Button text="Back to Dashboard" onAction="#handleBackToDashboard" prefWidth="180" style="-fx-background-color: #2E7D32; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px; -fx-background-radius: 5;"/>
+            </HBox>
+
+        </VBox>
+    </VBox>
+</ScrollPane>

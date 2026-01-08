@@ -79,6 +79,9 @@ public class MyProfileController {
     @FXML
     private Button logoutBtn;
     
+    @FXML
+    private Button myProductsBtn;
+    
     private DatabaseManager dbManager;
     private EmailService emailService;
     private User currentUser;
@@ -97,6 +100,12 @@ public class MyProfileController {
         
         // Setup gender combo box
         genderComboBox.getItems().addAll("Male", "Female", "Other");
+        
+        // Show "My Products" button only for logged-in vendors
+        if (myProductsBtn != null && VendorSession.getInstance().isLoggedIn()) {
+            myProductsBtn.setVisible(true);
+            myProductsBtn.setManaged(true);
+        }
         
         // Load user data
         if (currentUser != null) {
@@ -405,6 +414,17 @@ public class MyProfileController {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));
             Stage stage = (Stage) fullNameField.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @FXML
+    protected void goToMyProducts() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("VendorProductsList.fxml"));
+            Stage stage = (Stage) myProductsBtn.getScene().getWindow();
             stage.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();

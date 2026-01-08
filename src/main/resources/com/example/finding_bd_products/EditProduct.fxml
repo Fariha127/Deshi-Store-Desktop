@@ -7,20 +7,20 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.image.ImageView?>
 
-<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.finding_bd_products.AddProductController">
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.finding_bd_products.EditProductController">
     <VBox alignment="TOP_CENTER" spacing="20.0" style="-fx-background-color: linear-gradient(to bottom, #2E7D32, #4CAF50);">
         <padding>
             <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
         </padding>
 
         <!-- Title -->
-        <Text text="Add New Product" style="-fx-fill: white;">
+        <Text text="Edit Product" style="-fx-fill: white;">
             <font>
                 <Font name="System Bold" size="28.0"/>
             </font>
         </Text>
 
-        <Text text="Fill in the product details below" style="-fx-fill: white;">
+        <Text text="Update your product details below" style="-fx-fill: white;">
             <font>
                 <Font size="14.0"/>
             </font>
@@ -28,6 +28,12 @@
 
         <!-- Form Container -->
         <VBox spacing="15.0" alignment="CENTER" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 30;" maxWidth="600">
+
+            <!-- Product ID (Read-only) -->
+            <VBox spacing="5.0">
+                <Label text="Product ID:" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <TextField fx:id="productIdField" editable="false" prefWidth="500" style="-fx-background-color: #E8E8E8; -fx-text-fill: #52544F;"/>
+            </VBox>
 
             <!-- Product Name -->
             <VBox spacing="5.0">
@@ -38,7 +44,7 @@
             <!-- Manufacturer/Company Name -->
             <VBox spacing="5.0">
                 <Label text="Manufacturer/Company Name: *" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
-                <TextField fx:id="manufacturerField" promptText="Auto-filled from vendor account" prefWidth="500" style="-fx-background-color: #E8E8E8; -fx-text-fill: #52544F; -fx-prompt-text-fill: #979A93;" editable="false"/>
+                <TextField fx:id="manufacturerField" editable="false" prefWidth="500" style="-fx-background-color: #E8E8E8; -fx-text-fill: #52544F;"/>
             </VBox>
 
             <!-- Category -->
@@ -67,10 +73,10 @@
 
             <!-- Image Upload -->
             <VBox spacing="5.0">
-                <Label text="Product Image: *" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <Label text="Product Image:" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
                 <HBox spacing="10.0" alignment="CENTER_LEFT">
                     <TextField fx:id="imagePathField" promptText="Image path or URL" prefWidth="390" editable="false" style="-fx-background-color: #C9F6C1; -fx-text-fill: #52544F; -fx-prompt-text-fill: #979A93;"/>
-                    <Button text="Browse" onAction="#handleBrowseImage" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-padding: 8 20; -fx-background-radius: 5;"/>
+                    <Button text="Change Image" onAction="#handleBrowseImage" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-padding: 8 20; -fx-background-radius: 5;"/>
                 </HBox>
             </VBox>
 
@@ -85,8 +91,8 @@
 
             <!-- Buttons -->
             <HBox spacing="20.0" alignment="CENTER">
-                <Button text="Add Product" onAction="#handleAddProduct" prefWidth="150" style="-fx-background-color: linear-gradient(to bottom right, #FF6B35, #F7931E); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px; -fx-background-radius: 5;"/>
-                <Button text="Clear Form" onAction="#handleClearForm" prefWidth="150" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px; -fx-background-radius: 5;"/>
+                <Button text="Update Product" onAction="#handleUpdateProduct" prefWidth="150" style="-fx-background-color: linear-gradient(to bottom right, #FF6B35, #F7931E); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px; -fx-background-radius: 5;"/>
+                <Button text="Cancel" onAction="#handleCancel" prefWidth="150" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px; -fx-background-radius: 5;"/>
             </HBox>
 
             <Text text="* Required fields" style="-fx-fill: #666;">
@@ -95,8 +101,8 @@
                 </font>
             </Text>
 
-            <!-- Back to Dashboard Button -->
-            <Button text="Back to Dashboard" onAction="#handleBackToHome" prefWidth="200" style="-fx-background-color: #2E7D32; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px; -fx-background-radius: 5;">
+            <!-- Back to Product Details Button -->
+            <Button text="Back to Product Details" onAction="#handleBackToDetails" prefWidth="200" style="-fx-background-color: #2E7D32; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px; -fx-background-radius: 5;">
                 <VBox.margin>
                     <Insets top="10.0"/>
                 </VBox.margin>

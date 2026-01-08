@@ -40,7 +40,8 @@ public class DatabaseManager {
                     vendor_id TEXT,
                     recommendation_count INTEGER DEFAULT 0,
                     approval_status TEXT DEFAULT 'pending',
-                    rejection_reason TEXT
+                    rejection_reason TEXT,
+                    original_product_id TEXT
                 )
                 """;
             stmt.execute(createProductsTable);
@@ -500,7 +501,8 @@ public class DatabaseManager {
 
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM products WHERE approval_status = 'approved'";
+        // Show approved products that are not pending edits (original_product_id IS NULL)
+        String sql = "SELECT * FROM products WHERE approval_status = 'approved' AND (original_product_id IS NULL OR original_product_id = '')";
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -525,7 +527,7 @@ public class DatabaseManager {
 
     public List<Product> getProductsByCategory(String category) {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM products WHERE category = ? AND approval_status = 'approved'";
+        String sql = "SELECT * FROM products WHERE category = ? AND approval_status = 'approved' AND (original_product_id IS NULL OR original_product_id = '')";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, category);
@@ -586,7 +588,7 @@ public class DatabaseManager {
     // Product Approval Methods
     public List<Product> getPendingProducts() {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM products WHERE approval_status = 'pending'";
+        String sql = "SELECT * FROM products WHERE approval_status = 'waiting'";
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -602,6 +604,8 @@ public class DatabaseManager {
                 );
                 product.setVendorId(rs.getString("vendor_id"));
                 product.setRecommendationCount(rs.getInt("recommendation_count"));
+                product.setApprovalStatus(rs.getString("approval_status"));
+                product.setOriginalProductId(rs.getString("original_product_id"));
                 products.add(product);
             }
         } catch (SQLException e) {
@@ -611,16 +615,49 @@ public class DatabaseManager {
     }
 
     public boolean approveProduct(String productId) {
-        String sql = "UPDATE products SET approval_status = 'approved', rejection_reason = NULL WHERE product_id = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, productId);
-            int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0;
+        try (Connection conn = getConnection()) {
+            // Check if this is an edited product
+            String checkSql = "SELECT original_product_id, name, description, price, unit, category, image_url FROM products WHERE product_id = ?";
+            try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+                checkStmt.setString(1, productId);
+                ResultSet rs = checkStmt.executeQuery();
+                if (rs.next()) {
+                    String originalProductId = rs.getString("original_product_id");
+                    
+                    if (originalProductId != null && !originalProductId.isEmpty()) {
+                        // This is an edited product - update the original product
+                        String updateSql = "UPDATE products SET name = ?, description = ?, price = ?, unit = ?, category = ?, image_url = ? WHERE product_id = ?";
+                        try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
+                            updateStmt.setString(1, rs.getString("name"));
+                            updateStmt.setString(2, rs.getString("description"));
+                            updateStmt.setDouble(3, rs.getDouble("price"));
+                            updateStmt.setString(4, rs.getString("unit"));
+                            updateStmt.setString(5, rs.getString("category"));
+                            updateStmt.setString(6, rs.getString("image_url"));
+                            updateStmt.setString(7, originalProductId);
+                            updateStmt.executeUpdate();
+                        }
+                        
+                        // Delete the pending edit entry
+                        String deleteSql = "DELETE FROM products WHERE product_id = ?";
+                        try (PreparedStatement deleteStmt = conn.prepareStatement(deleteSql)) {
+                            deleteStmt.setString(1, productId);
+                            return deleteStmt.executeUpdate() > 0;
+                        }
+                    } else {
+                        // This is a new product - simply approve it
+                        String approveSql = "UPDATE products SET approval_status = 'approved', rejection_reason = NULL WHERE product_id = ?";
+                        try (PreparedStatement approveStmt = conn.prepareStatement(approveSql)) {
+                            approveStmt.setString(1, productId);
+                            return approveStmt.executeUpdate() > 0;
+                        }
+                    }
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     public boolean rejectProduct(String productId, String reason) {
@@ -631,6 +668,18 @@ public class DatabaseManager {
             pstmt.setString(2, productId);
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deletePendingProductEdit(String productId) {
+        String sql = "DELETE FROM products WHERE product_id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, productId);
+            return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -683,6 +732,36 @@ public class DatabaseManager {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<Product> getProductsByVendor(String vendorId) {
+        List<Product> products = new ArrayList<>();
+        String sql = "SELECT * FROM products WHERE vendor_id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, vendorId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Product product = new Product(
+                        rs.getString("product_id"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getDouble("price"),
+                        rs.getString("unit"),
+                        rs.getString("category"),
+                        rs.getString("image_url")
+                );
+                product.setVendorId(rs.getString("vendor_id"));
+                product.setRecommendationCount(rs.getInt("recommendation_count"));
+                product.setApprovalStatus(rs.getString("approval_status"));
+                product.setRejectionReason(rs.getString("rejection_reason"));
+                product.setOriginalProductId(rs.getString("original_product_id"));
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
     }
 
     // Review related methods
@@ -1232,7 +1311,7 @@ public class DatabaseManager {
     // Add product by vendor
     public boolean addProductByVendor(String productId, String name, String description, double price, 
                                      String unit, String category, String imageUrl, String vendorId) {
-        String sql = "INSERT INTO products (product_id, name, description, price, unit, category, image_url, vendor_id, recommendation_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)";
+        String sql = "INSERT INTO products (product_id, name, description, price, unit, category, image_url, vendor_id, recommendation_count, approval_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, 'waiting')";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, productId);
@@ -1248,6 +1327,104 @@ public class DatabaseManager {
             e.printStackTrace();
         }
         return false;
+    }
+
+    // Update product - creates a new waiting version instead of updating the original
+    public boolean updateProduct(String productId, String name, String description, double price, 
+                                 String unit, String category, String imageUrl) {
+        try (Connection conn = getConnection()) {
+            // First check if the product exists and is approved
+            String checkSql = "SELECT approval_status, vendor_id FROM products WHERE product_id = ?";
+            try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+                checkStmt.setString(1, productId);
+                ResultSet rs = checkStmt.executeQuery();
+                if (rs.next()) {
+                    String currentStatus = rs.getString("approval_status");
+                    String vendorId = rs.getString("vendor_id");
+                    
+                    // If product is currently approved, create a new waiting version
+                    if ("approved".equalsIgnoreCase(currentStatus)) {
+                        // Delete any existing pending edit for this product
+                        String deletePendingSql = "DELETE FROM products WHERE original_product_id = ?";
+                        try (PreparedStatement deleteStmt = conn.prepareStatement(deletePendingSql)) {
+                            deleteStmt.setString(1, productId);
+                            deleteStmt.executeUpdate();
+                        }
+                        
+                        // Create new pending version with new product_id
+                        String newProductId = "EDIT_" + productId + "_" + System.currentTimeMillis();
+                        String insertSql = "INSERT INTO products (product_id, name, description, price, unit, category, image_url, vendor_id, recommendation_count, approval_status, original_product_id) " +
+                                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, 'waiting', ?)";
+                        try (PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+                            insertStmt.setString(1, newProductId);
+                            insertStmt.setString(2, name);
+                            insertStmt.setString(3, description);
+                            insertStmt.setDouble(4, price);
+                            insertStmt.setString(5, unit);
+                            insertStmt.setString(6, category);
+                            insertStmt.setString(7, imageUrl);
+                            insertStmt.setString(8, vendorId);
+                            insertStmt.setString(9, productId);
+                            return insertStmt.executeUpdate() > 0;
+                        }
+                    } else {
+                        // If product is not approved (waiting/rejected), update it directly
+                        String updateSql = "UPDATE products SET name = ?, description = ?, price = ?, unit = ?, category = ?, image_url = ?, approval_status = 'waiting', rejection_reason = NULL WHERE product_id = ?";
+                        try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
+                            updateStmt.setString(1, name);
+                            updateStmt.setString(2, description);
+                            updateStmt.setDouble(3, price);
+                            updateStmt.setString(4, unit);
+                            updateStmt.setString(5, category);
+                            updateStmt.setString(6, imageUrl);
+                            updateStmt.setString(7, productId);
+                            return updateStmt.executeUpdate() > 0;
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Get product by ID
+    public Product getProductById(String productId) {
+        String sql = "SELECT * FROM products WHERE product_id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, productId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                Product product = new Product(
+                    rs.getString("product_id"),
+                    rs.getString("name"),
+                    rs.getString("description"),
+                    rs.getDouble("price"),
+                    rs.getString("unit"),
+                    rs.getString("category"),
+                    rs.getString("image_url")
+                );
+                product.setVendorId(rs.getString("vendor_id"));
+                product.setRecommendationCount(rs.getInt("recommendation_count"));
+                product.setApprovalStatus(rs.getString("approval_status"));
+                product.setRejectionReason(rs.getString("rejection_reason"));
+                product.setOriginalProductId(rs.getString("original_product_id"));
+                
+                // Set manufacturer name from vendor
+                String vendorId = rs.getString("vendor_id");
+                if (vendorId != null) {
+                    String manufacturerName = getManufacturerName(vendorId);
+                    product.setManufacturerName(manufacturerName);
+                }
+                
+                return product;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // Delete user by email

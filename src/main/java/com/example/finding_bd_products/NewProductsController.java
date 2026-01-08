@@ -1,6 +1,8 @@
 package com.example.finding_bd_products;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -60,12 +62,16 @@ public class NewProductsController {
     private Button addProductBtn;
     
     @FXML
+    private Button myProductsBtn;
+    
+    @FXML
     private Button myProfileBtn;
     
     @FXML
     private Button logoutBtn;
 
     private DatabaseManager dbManager;
+    private ObservableList<Product> allNewProducts = FXCollections.observableArrayList();
 
     public void initialize() {
         dbManager = DatabaseManager.getInstance();
@@ -73,10 +79,25 @@ public class NewProductsController {
             loadProducts();
         }
         
+        // Add search listener for real-time filtering
+        if (searchField != null) {
+            searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (allNewProducts != null) {
+                    filterProducts(newValue);
+                }
+            });
+        }
+        
         // Show "Add Product" button only for logged-in vendors
         if (addProductBtn != null && VendorSession.getInstance().isLoggedIn()) {
             addProductBtn.setVisible(true);
             addProductBtn.setManaged(true);
+        }
+        
+        // Show "My Products" button only for logged-in vendors
+        if (myProductsBtn != null && VendorSession.getInstance().isLoggedIn()) {
+            myProductsBtn.setVisible(true);
+            myProductsBtn.setManaged(true);
         }
         
         // Show "My Profile" button only for logged-in users (not vendors)
@@ -154,6 +175,22 @@ public class NewProductsController {
     }
     
     @FXML
+    protected void goToMyProducts() {
+        if (!VendorSession.getInstance().isLoggedIn()) {
+            showLoginAlert();
+            return;
+        }
+        
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("VendorProductsList.fxml"));
+            Stage stage = (Stage) myProductsBtn.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @FXML
     protected void handleLogout() {
         try {
             // Clear both user and vendor sessions
@@ -170,29 +207,46 @@ public class NewProductsController {
     }
 
     private void loadProducts() {
-        productsGrid.getChildren().clear();
-
         // Get latest 12 products from database (reverse order to show newest first)
-        java.util.List<Product> allProducts = dbManager.getAllProducts();
+        java.util.List<Product> productList = dbManager.getAllProducts();
         
-        if (allProducts.isEmpty()) {
+        if (productList.isEmpty()) {
             System.out.println("No products found in database");
+            allNewProducts.clear();
+            displayProducts(allNewProducts);
             return;
         }
         
         // Reverse the list to show newest products first (assuming higher IDs are newer)
-        java.util.Collections.reverse(allProducts);
+        java.util.Collections.reverse(productList);
         
-        System.out.println("Loaded " + allProducts.size() + " products from database");
+        System.out.println("Loaded " + productList.size() + " products from database");
+        
+        // Store in ObservableList for search functionality
+        allNewProducts.setAll(productList);
+        displayProducts(allNewProducts);
+    }
+    
+    private void displayProducts(javafx.collections.ObservableList<Product> products) {
+        productsGrid.getChildren().clear();
+        
+        if (products.isEmpty()) {
+            Label noProductsLabel = new Label("No products found");
+            noProductsLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: #888888; -fx-padding: 40;");
+            VBox noProductsBox = new VBox(noProductsLabel);
+            noProductsBox.setStyle("-fx-alignment: center;");
+            productsGrid.add(noProductsBox, 0, 0, 3, 1);
+            return;
+        }
 
         int col = 0;
         int row = 0;
         
         // Display up to 12 products (latest)
-        int maxProducts = Math.min(allProducts.size(), 12);
+        int maxProducts = Math.min(products.size(), 12);
         
         for (int i = 0; i < maxProducts; i++) {
-            Product product = allProducts.get(i);
+            Product product = products.get(i);
             if (product != null) {
                 VBox card = createProductCard(product);
                 productsGrid.add(card, col, row);
@@ -379,8 +433,29 @@ public class NewProductsController {
 
     @FXML
     protected void onSearch() {
-        String searchText = searchField.getText();
-        System.out.println("Searching for: " + searchText);
+        if (searchField != null) {
+            filterProducts(searchField.getText());
+        }
+    }
+    
+    private void filterProducts(String searchText) {
+        if (searchText == null || searchText.trim().isEmpty()) {
+            displayProducts(allNewProducts);
+            return;
+        }
+        
+        String searchLower = searchText.toLowerCase().trim();
+        javafx.collections.ObservableList<Product> filteredProducts = javafx.collections.FXCollections.observableArrayList();
+        
+        for (Product product : allNewProducts) {
+            if (product.getName().toLowerCase().contains(searchLower) ||
+                product.getCategory().toLowerCase().contains(searchLower) ||
+                product.getProductId().toLowerCase().contains(searchLower)) {
+                filteredProducts.add(product);
+            }
+        }
+        
+        displayProducts(filteredProducts);
     }
 
     private void loadPage(String fxmlFile) {

@@ -18,6 +18,9 @@
                 <Button text="← Back to Home" onAction="#goToHome"
                         style="-fx-background-color: white; -fx-text-fill: #2E7D32; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;"
                         prefHeight="35.0" prefWidth="140.0"/>
+                <Button fx:id="myProductsBtn" text="Product Status" onAction="#goToMyProducts"
+                        style="-fx-background-color: linear-gradient(to bottom right, #9C27B0, #E91E63); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;"
+                        prefHeight="35.0" prefWidth="130.0" visible="false" managed="false"/>
                 <Region HBox.hgrow="ALWAYS"/>
                 <Label text="My Profile" textFill="white">
                     <font>

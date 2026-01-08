@@ -55,6 +55,7 @@ public class AdminDashboardController {
     @FXML private TableColumn<Product, String> productCategoryColumn;
     @FXML private TableColumn<Product, Void> productImageColumn;
     @FXML private TableColumn<Product, String> productVendorColumn;
+    @FXML private TableColumn<Product, String> productTypeColumn;
     @FXML private TableColumn<Product, Void> productActionColumn;
 
     private DatabaseManager dbManager;
@@ -181,6 +182,12 @@ public class AdminDashboardController {
         productUnitColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getUnit()));
         productCategoryColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCategory()));
         productVendorColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getVendorId()));
+        
+        productTypeColumn.setCellValueFactory(data -> {
+            Product p = data.getValue();
+            String type = (p.getOriginalProductId() != null && !p.getOriginalProductId().isEmpty()) ? "Edit" : "New";
+            return new SimpleStringProperty(type);
+        });
         
         productImageColumn.setCellFactory(param -> new TableCell<>() {
             private final ImageView imageView = new ImageView();
@@ -399,7 +406,17 @@ public class AdminDashboardController {
                 return;
             }
             
-            if (dbManager.rejectProduct(product.getProductId(), reason)) {
+            boolean success;
+            // Check if this is an edited product
+            if (product.getOriginalProductId() != null && !product.getOriginalProductId().isEmpty()) {
+                // For edited products, delete the pending edit entry
+                success = dbManager.deletePendingProductEdit(product.getProductId());
+            } else {
+                // For new products, mark as rejected
+                success = dbManager.rejectProduct(product.getProductId(), reason);
+            }
+            
+            if (success) {
                 // Send notification to vendor with rejection reason
                 String vendorId = dbManager.getVendorIdFromProduct(product.getProductId());
                 if (vendorId != null) {

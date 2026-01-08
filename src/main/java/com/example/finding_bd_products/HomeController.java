@@ -1,6 +1,8 @@
 package com.example.finding_bd_products;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -65,12 +67,16 @@ public class HomeController {
     private Button addProductBtn;
     
     @FXML
+    private Button myProductsBtn;
+    
+    @FXML
     private Button myProfileBtn;
     
     @FXML
     private Button logoutBtn;
 
     private DatabaseManager dbManager;
+    private ObservableList<Product> allRecommendedProducts = FXCollections.observableArrayList();
 
     @FXML
     protected void showHome() {
@@ -149,6 +155,25 @@ public class HomeController {
     }
 
     @FXML
+    protected void goToMyProducts() {
+        if (!VendorSession.getInstance().isLoggedIn()) {
+            showLoginAlert();
+            return;
+        }
+        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("VendorProductsList.fxml"));
+            Parent root = loader.load();
+            
+            Stage stage = (Stage) myProductsBtn.getScene().getWindow();
+            stage.getScene().setRoot(root);
+            stage.setTitle("Product Status");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     protected void onSearch() {
         String searchText = searchField.getText();
     }
@@ -199,10 +224,56 @@ public class HomeController {
             loadRecommendedProducts();
         }
         
+        // Add search listener for real-time filtering
+        if (searchField != null) {
+            searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (allRecommendedProducts != null) {
+                    filterProducts(newValue);
+                }
+            });
+        }
+        
+        // Check if vendor is logged in
+        boolean isVendor = VendorSession.getInstance().isLoggedIn();
+        
+        // Hide user navigation buttons for vendors
+        if (isVendor) {
+            if (homeBtn != null) {
+                homeBtn.setVisible(false);
+                homeBtn.setManaged(false);
+            }
+            if (allProductsBtn != null) {
+                allProductsBtn.setVisible(false);
+                allProductsBtn.setManaged(false);
+            }
+            if (categoriesBtn != null) {
+                categoriesBtn.setVisible(false);
+                categoriesBtn.setManaged(false);
+            }
+            if (newlyAddedBtn != null) {
+                newlyAddedBtn.setVisible(false);
+                newlyAddedBtn.setManaged(false);
+            }
+            if (favouritesBtn != null) {
+                favouritesBtn.setVisible(false);
+                favouritesBtn.setManaged(false);
+            }
+            if (favouriteCategoriesBtn != null) {
+                favouriteCategoriesBtn.setVisible(false);
+                favouriteCategoriesBtn.setManaged(false);
+            }
+        }
+        
         // Show "Add Product" button only for logged-in vendors
-        if (addProductBtn != null && VendorSession.getInstance().isLoggedIn()) {
+        if (addProductBtn != null && isVendor) {
             addProductBtn.setVisible(true);
             addProductBtn.setManaged(true);
+        }
+        
+        // Show "My Products" button only for logged-in vendors
+        if (myProductsBtn != null && isVendor) {
+            myProductsBtn.setVisible(true);
+            myProductsBtn.setManaged(true);
         }
         
         // Show "My Profile" button only for logged-in users (not vendors)
@@ -212,7 +283,7 @@ public class HomeController {
         }
         
         // Hide login/signup buttons and show logout button if user or vendor is logged in
-        if (UserSession.getInstance().isLoggedIn() || VendorSession.getInstance().isLoggedIn()) {
+        if (UserSession.getInstance().isLoggedIn() || isVendor) {
             if (loginBtn != null) {
                 loginBtn.setVisible(false);
                 loginBtn.setManaged(false);
@@ -229,26 +300,39 @@ public class HomeController {
     }
 
     private void loadRecommendedProducts() {
-        recommendedGrid.getChildren().clear();
-
         // Get all products from database
-        java.util.List<Product> allProducts = dbManager.getAllProducts();
+        java.util.List<Product> productList = dbManager.getAllProducts();
+        allRecommendedProducts.setAll(productList);
         
-        if (allProducts.isEmpty()) {
+        if (allRecommendedProducts.isEmpty()) {
             System.out.println("No products found in database");
             return;
         }
         
-        System.out.println("Loaded " + allProducts.size() + " products from database");
+        System.out.println("Loaded " + allRecommendedProducts.size() + " products from database");
+        displayRecommendedProducts(allRecommendedProducts);
+    }
+
+    private void displayRecommendedProducts(ObservableList<Product> products) {
+        recommendedGrid.getChildren().clear();
+        
+        if (products.isEmpty()) {
+            Label noProductsLabel = new Label("No products found");
+            noProductsLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: #888888; -fx-padding: 40;");
+            VBox noProductsBox = new VBox(noProductsLabel);
+            noProductsBox.setStyle("-fx-alignment: center;");
+            recommendedGrid.add(noProductsBox, 0, 0, 3, 1);
+            return;
+        }
 
         int col = 0;
         int row = 0;
         
         // Display up to 12 products (4 rows x 3 columns)
-        int maxProducts = Math.min(allProducts.size(), 12);
+        int maxProducts = Math.min(products.size(), 12);
         
         for (int i = 0; i < maxProducts; i++) {
-            Product product = allProducts.get(i);
+            Product product = products.get(i);
             if (product != null) {
                 VBox card = createProductCard(product);
                 recommendedGrid.add(card, col, row);
@@ -431,5 +515,44 @@ public class HomeController {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void handleSearch() {
+        if (searchField != null) {
+            filterProducts(searchField.getText());
+        }
+    }
+
+    @FXML
+    private void handleClearSearch() {
+        if (searchField != null) {
+            searchField.clear();
+            displayRecommendedProducts(allRecommendedProducts);
+        }
+    }
+
+    private void filterProducts(String searchText) {
+        if (allRecommendedProducts == null || allRecommendedProducts.isEmpty()) {
+            return;
+        }
+
+        if (searchText == null || searchText.trim().isEmpty()) {
+            displayRecommendedProducts(allRecommendedProducts);
+            return;
+        }
+
+        String lowerSearchText = searchText.toLowerCase().trim();
+        ObservableList<Product> filteredProducts = FXCollections.observableArrayList();
+        
+        for (Product p : allRecommendedProducts) {
+            if (p.getName().toLowerCase().contains(lowerSearchText) ||
+                p.getCategory().toLowerCase().contains(lowerSearchText) ||
+                p.getProductId().toLowerCase().contains(lowerSearchText)) {
+                filteredProducts.add(p);
+            }
+        }
+
+        displayRecommendedProducts(filteredProducts);
     }
 }

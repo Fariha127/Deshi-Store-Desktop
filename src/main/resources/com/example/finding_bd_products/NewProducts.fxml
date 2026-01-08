@@ -79,6 +79,10 @@
                             <font>
                                 <Font size="14.0" />
                             </font></Button>
+                        <Button fx:id="myProductsBtn" mnemonicParsing="false" onAction="#goToMyProducts" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: linear-gradient(to bottom right, #9C27B0, #E91E63); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" text="Product Status" visible="false" managed="false">
+                            <font>
+                                <Font size="14.0" />
+                            </font></Button>
                         <Region HBox.hgrow="ALWAYS" />
                         <Button fx:id="myProfileBtn" mnemonicParsing="false" onAction="#goToMyProfile" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: linear-gradient(to bottom, #2E7D32, #4CAF50); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" text="My Profile" visible="false" managed="false">
                             <font>
