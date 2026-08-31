@@ -1,4 +1,4 @@
-# 🛍️ Deshi Store Desktop (Finding BD Products)
+# 🛍️ Deshi Store (Desktop Version)
 
 ![Java](https://img.shields.io/badge/Java-25%20%2F%2021-orange.svg)
 ![JavaFX](https://img.shields.io/badge/JavaFX-21.0.6-blue.svg)
@@ -6,7 +6,7 @@
 ![Build](https://img.shields.io/badge/Maven-3.8%2B-brightgreen.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-**Deshi Store Desktop** is a modern cross-platform desktop application built using **JavaFX** and **SQLite**, designed to highlight, categorize, and promote authentic Bangladeshi products (*Deshi Products*). The application connects consumers with authentic Bangladeshi manufacturers, company vendors, and retail shop owners through a unified, role-based platform.
+**Deshi Store** is a modern cross-platform desktop application built using **JavaFX** and **SQLite**, designed to highlight, categorize, and promote authentic Bangladeshi products (*Deshi Products*). The application connects consumers with authentic Bangladeshi manufacturers, company vendors, and retail shop owners through a unified, role-based platform.
 
 ---
 
